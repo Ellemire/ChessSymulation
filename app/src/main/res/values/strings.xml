@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ChessSymulation</string>
+    <string name="symuluj">Symuluj</string>
+    <string name="title">Szachy - symulacja</string>
+    <string name="pole_a1">Pole_a1</string>
+    <string name="pole_b1">Pole_b1</string>
+    <string name="pole_a8">Pole_a8</string>
+</resources>
