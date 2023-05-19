@@ -1,17 +1,17 @@
 package com.example.chesssymulation;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PrepareActivity extends AppCompatActivity {
 
@@ -24,11 +24,16 @@ public class PrepareActivity extends AppCompatActivity {
     ImageButton btn_F1, btn_F2, btn_F3, btn_F4, btn_F5, btn_F6, btn_F7, btn_F8;
     ImageButton btn_G1, btn_G2, btn_G3, btn_G4, btn_G5, btn_G6, btn_G7, btn_G8;
     ImageButton btn_H1, btn_H2, btn_H3, btn_H4, btn_H5, btn_H6, btn_H7, btn_H8;
+    ImageButton btn_wKing, btn_wQ, btn_wR, btn_wB, btn_wK, btn_wP, btn_delete;
+    ImageButton btn_bKing, btn_bQ, btn_bR, btn_bB, btn_bK, btn_bP;
 
     ImageButton[][] buttons;
     ArrayList<ArrayList<ImageButton>> board;
+    ArrayList<ImageButton> palette;
 
-    ImageButton clicked = null;
+    ImageButton clicked;
+    Boolean iswKing = true, isbKing = true;
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +106,21 @@ public class PrepareActivity extends AppCompatActivity {
             btn_F8 = findViewById(R.id.btn_f8);
             btn_G8 = findViewById(R.id.btn_g8);
             btn_H8 = findViewById(R.id.btn_h8);
+
+            btn_wKing = findViewById(R.id.img_wKing);
+            btn_bKing = findViewById(R.id.img_bKing);
+            btn_wQ = findViewById(R.id.img_wQueen);
+            btn_bQ = findViewById(R.id.img_bQueen);
+            btn_wR = findViewById(R.id.img_wRook);
+            btn_bR = findViewById(R.id.img_bRook);
+            btn_wB = findViewById(R.id.img_wBishop);
+            btn_bB = findViewById(R.id.img_bBishop);
+            btn_wK = findViewById(R.id.img_wKnight);
+            btn_bK = findViewById(R.id.img_bKnight);
+            btn_wP = findViewById(R.id.img_wPawn);
+            btn_bP = findViewById(R.id.img_bPawn);
+            btn_delete = findViewById(R.id.btn_delete);
+            linearLayout = findViewById(R.id.layout_Palette);
         }
 
         buttons = new ImageButton[][]{{btn_A1, btn_A2, btn_A3, btn_A4, btn_A5, btn_A6, btn_A7, btn_A8},
@@ -112,6 +132,10 @@ public class PrepareActivity extends AppCompatActivity {
                 {btn_G1, btn_G2, btn_G3, btn_G4, btn_G5, btn_G6, btn_G7, btn_G8},
                 {btn_H1, btn_H2, btn_H3, btn_H4, btn_H5, btn_H6, btn_H7, btn_H8}};
 
+        palette = new ArrayList<>(Arrays.asList(btn_wKing, btn_wQ, btn_wR, btn_wB, btn_wK, btn_wP,
+                btn_bKing, btn_bQ, btn_bR, btn_bB, btn_bK, btn_bP));
+
+        clicked = null;
         board = new ArrayList<ArrayList<ImageButton>>();
         for(ImageButton[] row : buttons)
         {
@@ -123,25 +147,9 @@ public class PrepareActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if(clicked != null)
-                        {
-                            int x = 0, y = 0;
-                            for(ArrayList<ImageButton> row : board)
-                            {
-                                for(ImageButton square : row)
-                                {
-                                    if(clicked.equals(square))
-                                    {
-                                        y = row.indexOf(clicked);
-                                        x = board.indexOf(row);
-                                    }
-                                }
-                            }
-
-                            if((x + y) % 2 == 0)
-                                clicked.getBackground().setTint(getResources().getColor(R.color.chess_black));
-                            else
-                                clicked.getBackground().setTint(getResources().getColor(R.color.chess_white));
-                        }
+                            changeColorBack();
+                        else
+                            linearLayout.setVisibility(View.VISIBLE);
                         clicked = square;
                         clicked.getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                     }
@@ -149,74 +157,7 @@ public class PrepareActivity extends AppCompatActivity {
             }
             board.add(one_row);
         }
-        /*
-        {
-            btn_A1.setOnClickListener(onClickListener);
-            btn_A2.setOnClickListener(onClickListener);
-            btn_A3.setOnClickListener(onClickListener);
-            btn_A4.setOnClickListener(onClickListener);
-            btn_A5.setOnClickListener(onClickListener);
-            btn_A6.setOnClickListener(onClickListener);
-            btn_A7.setOnClickListener(onClickListener);
-            btn_A8.setOnClickListener(onClickListener);
-            btn_B1.setOnClickListener(onClickListener);
-            btn_B2.setOnClickListener(onClickListener);
-            btn_B3.setOnClickListener(onClickListener);
-            btn_B4.setOnClickListener(onClickListener);
-            btn_B5.setOnClickListener(onClickListener);
-            btn_B6.setOnClickListener(onClickListener);
-            btn_B7.setOnClickListener(onClickListener);
-            btn_B8.setOnClickListener(onClickListener);
-            btn_C1.setOnClickListener(onClickListener);
-            btn_C2.setOnClickListener(onClickListener);
-            btn_C3.setOnClickListener(onClickListener);
-            btn_C4.setOnClickListener(onClickListener);
-            btn_C5.setOnClickListener(onClickListener);
-            btn_C6.setOnClickListener(onClickListener);
-            btn_C7.setOnClickListener(onClickListener);
-            btn_C8.setOnClickListener(onClickListener);
-            btn_D1.setOnClickListener(onClickListener);
-            btn_D2.setOnClickListener(onClickListener);
-            btn_D3.setOnClickListener(onClickListener);
-            btn_D4.setOnClickListener(onClickListener);
-            btn_D5.setOnClickListener(onClickListener);
-            btn_D6.setOnClickListener(onClickListener);
-            btn_D7.setOnClickListener(onClickListener);
-            btn_D8.setOnClickListener(onClickListener);
-            btn_E1.setOnClickListener(onClickListener);
-            btn_E2.setOnClickListener(onClickListener);
-            btn_E3.setOnClickListener(onClickListener);
-            btn_E4.setOnClickListener(onClickListener);
-            btn_E5.setOnClickListener(onClickListener);
-            btn_E6.setOnClickListener(onClickListener);
-            btn_E7.setOnClickListener(onClickListener);
-            btn_E8.setOnClickListener(onClickListener);
-            btn_F1.setOnClickListener(onClickListener);
-            btn_F2.setOnClickListener(onClickListener);
-            btn_F3.setOnClickListener(onClickListener);
-            btn_F4.setOnClickListener(onClickListener);
-            btn_F5.setOnClickListener(onClickListener);
-            btn_F6.setOnClickListener(onClickListener);
-            btn_F7.setOnClickListener(onClickListener);
-            btn_F8.setOnClickListener(onClickListener);
-            btn_G1.setOnClickListener(onClickListener);
-            btn_G2.setOnClickListener(onClickListener);
-            btn_G3.setOnClickListener(onClickListener);
-            btn_G4.setOnClickListener(onClickListener);
-            btn_G5.setOnClickListener(onClickListener);
-            btn_G6.setOnClickListener(onClickListener);
-            btn_G7.setOnClickListener(onClickListener);
-            btn_G8.setOnClickListener(onClickListener);
-            btn_H1.setOnClickListener(onClickListener);
-            btn_H2.setOnClickListener(onClickListener);
-            btn_H3.setOnClickListener(onClickListener);
-            btn_H4.setOnClickListener(onClickListener);
-            btn_H5.setOnClickListener(onClickListener);
-            btn_H6.setOnClickListener(onClickListener);
-            btn_H7.setOnClickListener(onClickListener);
-            btn_H8.setOnClickListener(onClickListener);
-        }
-        */
+
         btn_startSymulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,5 +165,132 @@ public class PrepareActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        {
+            btn_wQ.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_queen));
+            btn_bQ.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_queen));
+            btn_wR.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_rook));
+            btn_bR.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_rook));
+            btn_wB.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_bishop));
+            btn_bB.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_bishop));
+            btn_wK.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_knight));
+            btn_bK.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_knight));
+            btn_wP.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_pawn));
+            btn_bP.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_pawn));
+            btn_wKing.setOnClickListener(v ->
+            {
+                if(iswKing)
+                {
+                    Toast.makeText(this, "It can be only one king!", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    clicked.setImageResource(R.drawable.w_king);
+                    iswKing = true;
+                    clicked.setTag("wKing");
+                }
+            });
+            btn_bKing.setOnClickListener(v ->
+            {
+                if(isbKing)
+                {
+                    Toast.makeText(this, "It can be only one king!", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    clicked.setImageResource(R.drawable.b_king);
+                    isbKing = true;
+                    clicked.setTag("bKing");
+                }
+            });
+        }
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clicked.getTag() != null)
+                {
+                    if(clicked.getTag().equals("wKing"))
+                    {
+                        iswKing = false;
+                        clicked.setTag("");
+                    }
+                    if(clicked.getTag().equals("bKing"))
+                    {
+                        isbKing = false;
+                        clicked.setTag("");
+                    }
+                }
+                clicked.setImageResource(0);
+            }
+        });
+
+        defaultPosition();
+    }
+
+    private void defaultPosition()
+    {
+        board.get(0).get(0).setImageResource(R.drawable.w_rook);
+        board.get(1).get(0).setImageResource(R.drawable.w_knight);
+        board.get(2).get(0).setImageResource(R.drawable.w_bishop);
+        board.get(3).get(0).setImageResource(R.drawable.w_queen);
+        board.get(4).get(0).setImageResource(R.drawable.w_king);
+        board.get(5).get(0).setImageResource(R.drawable.w_bishop);
+        board.get(6).get(0).setImageResource(R.drawable.w_knight);
+        board.get(7).get(0).setImageResource(R.drawable.w_rook);
+        board.get(0).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(1).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(2).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(3).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(4).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(5).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(6).get(1).setImageResource(R.drawable.w_pawn);
+        board.get(7).get(1).setImageResource(R.drawable.w_pawn);
+
+        board.get(0).get(7).setImageResource(R.drawable.b_rook);
+        board.get(1).get(7).setImageResource(R.drawable.b_knight);
+        board.get(2).get(7).setImageResource(R.drawable.b_bishop);
+        board.get(3).get(7).setImageResource(R.drawable.b_queen);
+        board.get(4).get(7).setImageResource(R.drawable.b_king);
+        board.get(5).get(7).setImageResource(R.drawable.b_bishop);
+        board.get(6).get(7).setImageResource(R.drawable.b_knight);
+        board.get(7).get(7).setImageResource(R.drawable.b_rook);
+        board.get(0).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(1).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(2).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(3).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(4).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(5).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(6).get(6).setImageResource(R.drawable.b_pawn);
+        board.get(7).get(6).setImageResource(R.drawable.b_pawn);
+
+        board.get(4).get(0).setTag("wKing");
+        board.get(4).get(7).setTag("bKing");
+    }
+
+    private void changeColorBack()
+    {
+        int x = 0, y = 0;
+        for(ArrayList<ImageButton> row : board)
+        {
+            for(ImageButton square : row)
+            {
+                if(clicked.equals(square))
+                {
+                    y = row.indexOf(clicked);
+                    x = board.indexOf(row);
+                }
+            }
+        }
+
+        if((x + y) % 2 == 0)
+            clicked.getBackground().setTint(getResources().getColor(R.color.chess_black));
+        else
+            clicked.getBackground().setTint(getResources().getColor(R.color.chess_white));
+    }
+
+    @Override
+    public void onBackPressed() {
+        changeColorBack();
+        super.onBackPressed();
     }
 }

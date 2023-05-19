@@ -27,7 +27,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_rook2" />
+                app:srcCompat="@drawable/b_rook" />
 
             <ImageButton
                 android:id="@+id/btn_b8"
@@ -35,7 +35,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_knight2" />
+                app:srcCompat="@drawable/b_knight" />
 
             <ImageButton
                 android:id="@+id/btn_c8"
@@ -43,7 +43,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_bishop2" />
+                app:srcCompat="@drawable/b_bishop" />
 
             <ImageButton
                 android:id="@+id/btn_d8"
@@ -51,7 +51,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_king2" />
+                app:srcCompat="@drawable/b_queen" />
 
             <ImageButton
                 android:id="@+id/btn_e8"
@@ -59,7 +59,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_queen2" />
+                app:srcCompat="@drawable/b_king" />
 
             <ImageButton
                 android:id="@+id/btn_f8"
@@ -67,7 +67,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_bishop2" />
+                app:srcCompat="@drawable/b_bishop" />
 
             <ImageButton
                 android:id="@+id/btn_g8"
@@ -75,7 +75,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_knight2" />
+                app:srcCompat="@drawable/b_knight" />
 
             <ImageButton
                 android:id="@+id/btn_h8"
@@ -83,7 +83,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_rook2" />
+                app:srcCompat="@drawable/b_rook" />
 
         </TableRow>
 
@@ -97,7 +97,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_b7"
@@ -105,7 +105,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_c7"
@@ -113,7 +113,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_d7"
@@ -121,7 +121,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_e7"
@@ -129,7 +129,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_f7"
@@ -137,7 +137,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_g7"
@@ -145,7 +145,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
             <ImageButton
                 android:id="@+id/btn_h7"
@@ -153,7 +153,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn2" />
+                app:srcCompat="@drawable/b_pawn" />
 
         </TableRow>
 
@@ -509,7 +509,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_king" />
+                app:srcCompat="@drawable/w_queen" />
 
             <ImageButton
                 android:id="@+id/btn_e1"
@@ -517,7 +517,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_queen" />
+                app:srcCompat="@drawable/w_king" />
 
             <ImageButton
                 android:id="@+id/btn_f1"
@@ -558,10 +558,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
+        android:id="@+id/layout_Palette"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="1dp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -572,11 +574,18 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/img_bBishop"
+                android:id="@+id/img_bKing"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/b_bishop" />
+                app:srcCompat="@drawable/b_king" />
+
+            <ImageButton
+                android:id="@+id/img_bQueen"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/b_queen" />
 
             <ImageButton
                 android:id="@+id/img_bRook"
@@ -586,11 +595,11 @@
                 app:srcCompat="@drawable/b_rook" />
 
             <ImageButton
-                android:id="@+id/img_bKing"
+                android:id="@+id/img_bBishop"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/b_king" />
+                app:srcCompat="@drawable/b_bishop" />
 
             <ImageButton
                 android:id="@+id/img_bKnight"
@@ -598,13 +607,6 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/b_knight" />
-
-            <ImageButton
-                android:id="@+id/img_bQueen"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/b_queen" />
 
             <ImageButton
                 android:id="@+id/img_bPawn"
@@ -619,33 +621,11 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/img_wBishop"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:contentDescription="w_bishop"
-                app:srcCompat="@drawable/w_bishop" />
-
-            <ImageButton
-                android:id="@+id/img_wRook"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/w_rook" />
-
-            <ImageButton
                 android:id="@+id/img_wKing"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/w_king" />
-
-            <ImageButton
-                android:id="@+id/img_wKnight"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/w_knight" />
 
             <ImageButton
                 android:id="@+id/img_wQueen"
@@ -655,12 +635,46 @@
                 app:srcCompat="@drawable/w_queen" />
 
             <ImageButton
+                android:id="@+id/img_wRook"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/w_rook" />
+
+            <ImageButton
+                android:id="@+id/img_wBishop"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:contentDescription="w_bishop"
+                app:srcCompat="@drawable/w_bishop" />
+
+            <ImageButton
+                android:id="@+id/img_wKnight"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/w_knight" />
+
+            <ImageButton
                 android:id="@+id/img_wPawn"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/w_pawn" />
         </TableRow>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_delete" />
+        </LinearLayout>
 
     </LinearLayout>
 
