@@ -1,38 +1,72 @@
 package Chess;
 
 import android.util.Pair;
-
 import java.util.ArrayList;
+
 public class Piece {
 
     Pair<Integer, Integer> position;
     Pair<Integer, Integer> kingPosition;
+    boolean color;
     ArrayList<Pair<Integer, Integer>> movesList;
-    ArrayList<Pair<Integer,Integer>> PiecesListWhite;
-    ArrayList<Pair<Integer,Integer>> PiecesListBlack;
 
-    public Piece(Pair<Integer, Integer> position, boolean color, ArrayList<Pair<Integer,Integer>> movesList){}
-    public boolean isColor() {
-        return color;
-    }
+    private int picture;
 
-    public void setColor(boolean color) {
+    static ArrayList<Pair<Integer,Integer>> PiecesListWhite = null;
+    static ArrayList<Pair<Integer,Integer>> PiecesListBlack = null;
+
+    //konstruktor
+    public Piece(Pair<Integer, Integer> position, boolean color) {
+        this.position = position;
         this.color = color;
     }
 
-    public Pair<Integer, Integer> getPosition() {
+    //gettery i settery
+    public boolean isColor() {
+        return color;
+    }
+    public void setColor ( boolean color){
+        this.color = color;
+    }
+
+    public Pair<Integer, Integer> getPosition () {
         return position;
     }
-
-    boolean color;
-    public void getPiecesList(){}
-
-    public void setPiecesList(){}
-
-    public void possibleMoves() {
+    public void setPosition(Pair<Integer, Integer> position) {
+        this.position = position;
     }
 
-    public boolean isMovable() {
+    public ArrayList<Pair<Integer, Integer>> getPiecesListWhite() {
+        return PiecesListWhite;
+    }
+    public void setPiecesListWhite(ArrayList<Pair<Integer, Integer>> piecesListWhite) {
+        PiecesListWhite = piecesListWhite;
+    }
+
+    public ArrayList<Pair<Integer, Integer>> getPiecesListBlack() {
+        return PiecesListBlack;
+    }
+    public void setPiecesListBlack(ArrayList<Pair<Integer, Integer>> piecesListBlack) {
+        PiecesListBlack = piecesListBlack;
+    }
+
+    public ArrayList<Pair<Integer, Integer>> getMovesList() {
+        return movesList;
+    }
+    public void setMovesList(ArrayList<Pair<Integer, Integer>> movesList) {
+        this.movesList = movesList;
+    }
+
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
+    }
+
+    //inne
+    public boolean isMovable () {
         return false;
     }
 
@@ -41,55 +75,10 @@ public class Piece {
         square.getPosition();
     }
 
-    public void KingCreate() {
-        King king = new King(position, color, movesList);
-        if(!color)//biały
-            PiecesListWhite.add(position);
-
-        if(color)//czarny
-            PiecesListBlack.add(position);
-
-        kingPosition = position;
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves()
+    {
+        return null;
     }
-    public void BishopCreate() {
-        Bishop bishop= new Bishop(position, color, movesList);
-        if(!color)//biały
-            PiecesListWhite.add(position);
 
-        if(color)//czarny
-            PiecesListBlack.add(position);
-    }
-    public void KnightCreate() {
-        Knight knight = new Knight(position, color, movesList);
-        if(!color)//biały
-            PiecesListWhite.add(position);
-
-        if(color)//czarny
-            PiecesListBlack.add(position);
-    }
-    public void PawnCreate() {
-        Pawn pawn= new Pawn(position, color, movesList);
-        if(!color)//biały
-            PiecesListWhite.add(position);
-
-        if(color)//czarny
-            PiecesListBlack.add(position);
-    }
-    public void RookCreate() {
-        Rook rook= new Rook(position, color, movesList);
-        if(!color)//biały
-            PiecesListWhite.add(position);
-
-        if(color)//czarny
-            PiecesListBlack.add(position);
-    }
-    public void QueenCreate() {
-        Queen queen= new Queen(position, color, movesList);
-        if(!color)//biały
-            PiecesListWhite.add(position);
-
-        if(color)//czarny
-            PiecesListBlack.add(position);
-    }
 }
 

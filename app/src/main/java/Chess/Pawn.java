@@ -5,8 +5,19 @@ import android.util.Pair;
 import java.util.ArrayList;
 public class Pawn extends Piece {
 
-    public Pawn(Pair<Integer, Integer> position, boolean color, ArrayList<Pair<Integer,Integer>> movesList){super(position,color,movesList);}
-    public ArrayList<Pair<Integer, Integer>> calculatePossiblePawnMoves(int currentColumn, int currentRow) {
+    boolean isCheck;
+
+    //konstruktor
+    public Pawn(Pair<Integer, Integer> position, boolean color) {
+        super(position, color);
+
+        if(!color)//biały
+            PiecesListWhite.add(position);
+        if(color)//czarny
+            PiecesListBlack.add(position);
+    }
+
+    public ArrayList<Pair<Integer, Integer>> calculatePossiblePawnMoves() {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
 
         int forwardRow;
@@ -14,26 +25,26 @@ public class Pawn extends Piece {
         int attackColumnLeft;
         int attackColumnRight;
 
-        if (currentRow == 1) {
-            forwardRow = currentRow + 1;
-            doubleForwardRow = currentRow + 2;
-        } else if (currentRow == 6) {
-            forwardRow = currentRow - 1;
-            doubleForwardRow = currentRow - 2;
+        if (position.second == 1) {
+            forwardRow = position.second + 1;
+            doubleForwardRow = position.second + 2;
+        } else if (position.second == 6) {
+            forwardRow = position.second - 1;
+            doubleForwardRow = position.second - 2;
         } else {
-            forwardRow = currentRow + 1;
-            doubleForwardRow = currentRow - 1;
+            forwardRow = position.second + 1;
+            doubleForwardRow = position.second - 1;
         }
 
-        attackColumnLeft = currentColumn - 1;
-        attackColumnRight = currentColumn + 1;
+        attackColumnLeft = position.first - 1;
+        attackColumnRight = position.first + 1;
         Check();
-        if (isValidSquare(currentColumn, forwardRow) && IsNotOccupied(currentColumn, forwardRow) && !isCheck){
-            possibleMoves.add(new Pair<>(currentColumn, forwardRow));
+        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow) && !isCheck){
+            possibleMoves.add(new Pair<>(position.first, forwardRow));
         }
         Check();
-        if (isValidSquare(currentColumn, doubleForwardRow) && IsNotOccupied(currentColumn, doubleForwardRow) && !isCheck) {
-            possibleMoves.add(new Pair<>(currentColumn, doubleForwardRow));
+        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow) && !isCheck) {
+            possibleMoves.add(new Pair<>(position.first, doubleForwardRow));
         }
         Check();
         if (isValidSquare(attackColumnLeft, forwardRow) && IsNotOccupied(attackColumnLeft, forwardRow) && !isCheck) {
@@ -101,23 +112,12 @@ public class Pawn extends Piece {
 
         return false;
     }
-    boolean isCheck;
+
     private void Check(){
         ArrayList<Pair<Integer, Integer>> pieces = new ArrayList<>();
         if(color)
             isCheck= isCheck(PiecesListBlack, kingPosition);
         if(!color)
             isCheck= isCheck(PiecesListWhite, kingPosition);
-    }
-
-
-    public void Generate_Pawn(){
-        int currentColumn = position.second;
-        int currentRow = position.first;
-
-        ArrayList<Pair<Integer, Integer>> possibleMoves = calculatePossiblePawnMoves(currentColumn, currentRow);
-        for(Pair<Integer, Integer> moves : possibleMoves) {
-            movesList.add(moves);
-        }
     }
 }

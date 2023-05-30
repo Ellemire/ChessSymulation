@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -40,6 +42,7 @@ public class PrepareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prepare);
 
+        //find view
         {
             btn_startSymulation = findViewById(R.id.btn_startSymulation);
             btn_A1 = findViewById(R.id.btn_a1);
@@ -135,6 +138,7 @@ public class PrepareActivity extends AppCompatActivity {
         palette = new ArrayList<>(Arrays.asList(btn_wKing, btn_wQ, btn_wR, btn_wB, btn_wK, btn_wP,
                 btn_bKing, btn_bQ, btn_bR, btn_bB, btn_bK, btn_bP));
 
+        //on click dla szchownicy
         clicked = null;
         board = new ArrayList<ArrayList<ImageButton>>();
         for(ImageButton[] row : buttons)
@@ -154,29 +158,44 @@ public class PrepareActivity extends AppCompatActivity {
                         clicked.getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                     }
                 });
+                square.setTag("");
             }
             board.add(one_row);
         }
 
+        //rozpoczęcie symulacji
         btn_startSymulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrepareActivity.this, SymulationActivity.class);
+                //intent.putExtra("board", board);
+                DataHolder.setData(board);
                 startActivity(intent);
             }
         });
 
+        //ustawienie obrazów na planszy
         {
-            btn_wQ.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_queen));
-            btn_bQ.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_queen));
-            btn_wR.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_rook));
-            btn_bR.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_rook));
-            btn_wB.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_bishop));
-            btn_bB.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_bishop));
-            btn_wK.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_knight));
-            btn_bK.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_knight));
-            btn_wP.setOnClickListener(v -> clicked.setImageResource(R.drawable.w_pawn));
-            btn_bP.setOnClickListener(v -> clicked.setImageResource(R.drawable.b_pawn));
+            btn_wQ.setOnClickListener(v -> {clicked.setImageResource(R.drawable.w_queen);
+                clicked.setTag("wQueen");});
+            btn_bQ.setOnClickListener(v -> {clicked.setImageResource(R.drawable.b_queen);
+                clicked.setTag("bQueen");});
+            btn_wR.setOnClickListener(v -> {clicked.setImageResource(R.drawable.w_rook);
+                clicked.setTag("wRook");});
+            btn_bR.setOnClickListener(v -> {clicked.setImageResource(R.drawable.b_rook);
+                clicked.setTag("bRook");});
+            btn_wB.setOnClickListener(v -> {clicked.setImageResource(R.drawable.w_bishop);
+                clicked.setTag("wBishop");});
+            btn_bB.setOnClickListener(v -> {clicked.setImageResource(R.drawable.b_bishop);
+                clicked.setTag("bBishop");});
+            btn_wK.setOnClickListener(v -> {clicked.setImageResource(R.drawable.w_knight);
+                clicked.setTag("wKnight");});
+            btn_bK.setOnClickListener(v -> {clicked.setImageResource(R.drawable.b_knight);
+                clicked.setTag("bKnight");});
+            btn_wP.setOnClickListener(v -> {clicked.setImageResource(R.drawable.w_pawn);
+                clicked.setTag("wPawn");});
+            btn_bP.setOnClickListener(v -> {clicked.setImageResource(R.drawable.b_pawn);
+                clicked.setTag("bPawn");});
             btn_wKing.setOnClickListener(v ->
             {
                 if(iswKing)
@@ -204,6 +223,8 @@ public class PrepareActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //usuwanie z planszy - btn_delete
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,6 +248,7 @@ public class PrepareActivity extends AppCompatActivity {
         defaultPosition();
     }
 
+    //ustawienie standardowe początkowe
     private void defaultPosition()
     {
         board.get(0).get(0).setImageResource(R.drawable.w_rook);
@@ -263,10 +285,42 @@ public class PrepareActivity extends AppCompatActivity {
         board.get(6).get(6).setImageResource(R.drawable.b_pawn);
         board.get(7).get(6).setImageResource(R.drawable.b_pawn);
 
+        board.get(0).get(0).setTag("wRook");
+        board.get(1).get(0).setTag("wKnight");
+        board.get(2).get(0).setTag("wBishop");
+        board.get(3).get(0).setTag("wQueen");
         board.get(4).get(0).setTag("wKing");
+        board.get(5).get(0).setTag("wBishop");
+        board.get(6).get(0).setTag("wKnight");
+        board.get(7).get(0).setTag("wRook");
+        board.get(0).get(1).setTag("wPawn");
+        board.get(1).get(1).setTag("wPawn");
+        board.get(2).get(1).setTag("wPawn");
+        board.get(3).get(1).setTag("wPawn");
+        board.get(4).get(1).setTag("wPawn");
+        board.get(5).get(1).setTag("wPawn");
+        board.get(6).get(1).setTag("wPawn");
+        board.get(7).get(1).setTag("wPawn");
+
+        board.get(0).get(7).setTag("bRook");
+        board.get(1).get(7).setTag("bKnight");
+        board.get(2).get(7).setTag("bBishop");
+        board.get(3).get(7).setTag("bQueen");
         board.get(4).get(7).setTag("bKing");
+        board.get(5).get(7).setTag("bBishop");
+        board.get(6).get(7).setTag("bKnight");
+        board.get(7).get(7).setTag("bRook");
+        board.get(0).get(6).setTag("bPawn");
+        board.get(1).get(6).setTag("bPawn");
+        board.get(2).get(6).setTag("bPawn");
+        board.get(3).get(6).setTag("bPawn");
+        board.get(4).get(6).setTag("bPawn");
+        board.get(5).get(6).setTag("bPawn");
+        board.get(6).get(6).setTag("bPawn");
+        board.get(7).get(6).setTag("bPawn");
     }
 
+    //funkcja do powrotu koloru po kliknięciu innego przycisku
     private void changeColorBack()
     {
         int x = 0, y = 0;

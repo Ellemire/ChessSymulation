@@ -4,26 +4,45 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 
-public class Rook extends Piece{
+public class Rook extends Piece {
 
-    public Rook(Pair<Integer, Integer> position, boolean color, ArrayList<Pair<Integer,Integer>> movesList){super(position,color,movesList);}
+    private boolean wasMoved;
 
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleRookMoves(int currentColumn, int currentRow) {
+    //gettery i settery
+    public boolean isWasMoved() {
+        return wasMoved;
+    }
+    public void setWasMoved(boolean wasMoved) {
+        this.wasMoved = wasMoved;
+    }
+
+    //konstruktor
+    public Rook(Pair<Integer, Integer> position, boolean color){
+        super(position,color);
+
+        if(!color)//biały
+            PiecesListWhite.add(position);
+        if(color)//czarny
+            PiecesListBlack.add(position);
+    }
+
+    @Override
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
 
         // Ruchy wzdłuż kolumn
         for (int row = 0; row < 8; row++) {
             Check();
-            if (row != currentRow && IsNotOccupied(currentColumn, row) && !isCheck) {
-                possibleMoves.add(new Pair<>(currentColumn, row));
+            if (row != position.second && IsNotOccupied(position.first, row) && !isCheck) {
+                possibleMoves.add(new Pair<>(position.first, row));
             }
         }
 
         // Ruchy wzdłuż wierszy
         for (int column = 0; column < 8; column++) {
             Check();
-            if (column != currentColumn && IsNotOccupied(column, currentRow) && !isCheck) {
-                possibleMoves.add(new Pair<>(column, currentRow));
+            if (column != position.first && IsNotOccupied(column, position.second) && !isCheck) {
+                possibleMoves.add(new Pair<>(column, position.second));
             }
         }
 
@@ -86,25 +105,4 @@ public class Rook extends Piece{
         if(!color)
             isCheck= isCheck(PiecesListWhite, kingPosition);
     }
-
-
-    public void Generate_Rook() {
-        int currentColumn = position.second;
-        int currentRow = position.first;
-        ArrayList<Pair<Integer, Integer>> possibleMoves = calculatePossibleRookMoves(currentColumn, currentRow);
-        for(Pair<Integer, Integer> moves : possibleMoves) {
-            movesList.add(moves);
-        }
-    }
-
-
-    public boolean isWasMoved() {
-        return wasMoved;
-    }
-
-    public void setWasMoved(boolean wasMoved) {
-        this.wasMoved = wasMoved;
-    }
-
-    private boolean wasMoved;
 }

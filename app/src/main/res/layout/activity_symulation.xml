@@ -26,8 +26,8 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="?attr/colorButtonNormal"
-                app:srcCompat="?attr/colorButtonNormal"
-                android:contentDescription="@string/pole_a8" />
+                android:contentDescription="@string/pole_a8"
+                app:srcCompat="?attr/colorButtonNormal" />
 
             <ImageView
                 android:id="@+id/img_b8"
@@ -515,8 +515,8 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@android:color/holo_green_dark"
-                app:srcCompat="@android:color/holo_green_dark"
-                android:contentDescription="@string/pole_a1" />
+                android:contentDescription="@string/pole_a1"
+                app:srcCompat="@android:color/holo_green_dark" />
 
             <ImageView
                 android:id="@+id/img_b1"
@@ -524,8 +524,8 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="?attr/colorButtonNormal"
-                app:srcCompat="?attr/colorButtonNormal"
-                android:contentDescription="@string/pole_b1"/>
+                android:contentDescription="@string/pole_b1"
+                app:srcCompat="?attr/colorButtonNormal" />
 
             <ImageView
                 android:id="@+id/img_c1"

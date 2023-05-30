@@ -6,15 +6,26 @@ import java.util.ArrayList;
 
 public class Knight extends Piece {
 
-    public Knight(Pair<Integer, Integer> position, boolean color, ArrayList<Pair<Integer,Integer>> movesList){super(position,color,movesList);}
+    //konstruktor
+    public Knight(Pair<Integer, Integer> position, boolean color)
+    {
+        super(position,color);
+
+        if(!color)//biały
+            PiecesListWhite.add(position);
+        if(color)//czarny
+            PiecesListBlack.add(position);
+    }
+
     private final int[][] MOVES = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1}};
 
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleKnightMoves(int currentColumn, int currentRow) {
+    @Override
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
 
         for (int[] move : MOVES) {
-            int newColumn = currentColumn + move[0];
-            int newRow = currentRow + move[1];
+            int newColumn = position.first + move[0];
+            int newRow = position.second + move[1];
             Check();
             if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow) && !isCheck) {
                 possibleMoves.add(new Pair<>(newColumn, newRow));
@@ -84,16 +95,5 @@ public class Knight extends Piece {
             isCheck= isCheck(PiecesListBlack, kingPosition);
         if(!color)
             isCheck= isCheck(PiecesListWhite, kingPosition);
-    }
-
-    public void GenerateKnight() {
-        int currentColumn = position.second;
-        int currentRow = position.first;
-
-
-        ArrayList<Pair<Integer, Integer>> possibleMoves = calculatePossibleKnightMoves(currentColumn, currentRow);
-        for(Pair<Integer, Integer> moves : possibleMoves) {
-            movesList.add(moves);
-        }
     }
 }

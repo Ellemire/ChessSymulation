@@ -6,30 +6,39 @@ import java.util.ArrayList;
 
 public class Queen extends Piece {
 
-    public Queen(Pair<Integer, Integer> position, boolean color, ArrayList<Pair<Integer,Integer>> movesList){super(position,color,movesList);}
+    //konstruktor
+    public Queen(Pair<Integer, Integer> position, boolean color) {
+        super(position, color);
 
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleQueenMoves(int currentColumn, int currentRow) {
+        if(!color)//biały
+            PiecesListWhite.add(position);
+        if(color)//czarny
+            PiecesListBlack.add(position);
+    }
+
+    @Override
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
 
         // Ruchy w pionie
         for (int row = 0; row < 8; row++) {
             Check();
-            if (row != currentRow && IsNotOccupied(currentColumn,row) && !isCheck) {
-                possibleMoves.add(new Pair<>(currentColumn, row));
+            if (row != position.second && IsNotOccupied(position.first,row) && !isCheck) {
+                possibleMoves.add(new Pair<>(position.first, row));
             }
         }
 
         // Ruchy w poziomie
         for (int column = 0; column < 8; column++) {
             Check();
-            if (column != currentColumn && IsNotOccupied(column,currentRow) && !isCheck) {
-                possibleMoves.add(new Pair<>(column, currentRow));
+            if (column != position.first && IsNotOccupied(column,position.second) && !isCheck) {
+                possibleMoves.add(new Pair<>(column, position.second));
             }
         }
 
         // Ruchy na skosach
-        int column = currentColumn + 1;
-        int row = currentRow + 1;
+        int column = position.first + 1;
+        int row = position.second + 1;
         Check();
         while (column < 8 && row < 8 && IsNotOccupied(column,row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -38,8 +47,8 @@ public class Queen extends Piece {
             Check();
         }
 
-        column = currentColumn - 1;
-        row = currentRow + 1;
+        column = position.first - 1;
+        row = position.second + 1;
         Check();
         while (column >= 0 && row < 8 && IsNotOccupied(column,row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -48,8 +57,8 @@ public class Queen extends Piece {
             Check();
         }
 
-        column = currentColumn + 1;
-        row = currentRow - 1;
+        column = position.first + 1;
+        row = position.second - 1;
         Check();
         while (column < 8 && row >= 0 && IsNotOccupied(column,row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -58,8 +67,8 @@ public class Queen extends Piece {
             Check();
         }
 
-        column = currentColumn - 1;
-        row = currentRow - 1;
+        column = position.first - 1;
+        row = position.second - 1;
         Check();
         while (column >= 0 && row >= 0 && IsNotOccupied(column,row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -120,6 +129,7 @@ public class Queen extends Piece {
 
         return false;
     }
+
     boolean isCheck;
     private void Check(){
         ArrayList<Pair<Integer, Integer>> pieces = new ArrayList<>();
@@ -127,16 +137,5 @@ public class Queen extends Piece {
             isCheck= isCheck(PiecesListBlack, kingPosition);
         if(!color)
             isCheck= isCheck(PiecesListWhite, kingPosition);
-    }
-
-    public void Generate_Queen(){
-        int currentColumn = position.second;
-        int currentRow = position.first;
-
-
-        ArrayList<Pair<Integer, Integer>> possibleMoves = calculatePossibleQueenMoves(currentColumn, currentRow);
-        for(Pair<Integer, Integer> moves : possibleMoves) {
-            movesList.add(moves);
-        }
     }
 }

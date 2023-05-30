@@ -3,18 +3,27 @@ package Chess;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Bishop extends Piece {
 
-    public Bishop(Pair<Integer, Integer> position, boolean color, ArrayList<Pair<Integer,Integer>> movesList){super(position,color,movesList);}
+    boolean isCheck;
 
-    public List<Pair<Integer, Integer>> calculatePossibleBishopMoves(int currentColumn, int currentRow) {
-        List<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
+    //konstruktor
+    public Bishop(Pair<Integer, Integer> position, boolean color){
+        super(position, color);
+        if(!color)//biały
+            PiecesListWhite.add(position);
+        if(color)//czarny
+            PiecesListBlack.add(position);
+    }
+
+    @Override
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
+        ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
 
         // Ruchy na prawo-górę
-        int column = currentColumn + 1;
-        int row = currentRow + 1;
+        int column = position.first + 1;
+        int row = position.second + 1;
         Check();
         while (column < 8 && row < 8 && IsNotOccupied(column, row) && !isCheck ) {
             possibleMoves.add(new Pair<>(column, row));
@@ -24,8 +33,8 @@ public class Bishop extends Piece {
         }
 
         // Ruchy na lewo-górę
-        column = currentColumn - 1;
-        row = currentRow + 1;
+        column = position.first - 1;
+        row = position.second + 1;
         Check();
         while (column >= 0 && row < 8 && IsNotOccupied(column, row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -35,8 +44,8 @@ public class Bishop extends Piece {
         }
 
         // Ruchy na prawo-dół
-        column = currentColumn + 1;
-        row = currentRow - 1;
+        column = position.first + 1;
+        row = position.second - 1;
         Check();
         while (column < 8 && row >= 0 && IsNotOccupied(column, row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -46,8 +55,8 @@ public class Bishop extends Piece {
         }
 
         // Ruchy na lewo-dół
-        column = currentColumn - 1;
-        row = currentRow - 1;
+        column = position.first - 1;
+        row = position.second - 1;
         Check();
         while (column >= 0 && row >= 0 && IsNotOccupied(column, row) && !isCheck) {
             possibleMoves.add(new Pair<>(column, row));
@@ -67,7 +76,8 @@ public class Bishop extends Piece {
             return false;
         return true;
     }
-    private boolean isCheck(List<Pair<Integer, Integer>> pieces, Pair<Integer, Integer> kingPosition) {
+
+    private boolean isCheck(ArrayList<Pair<Integer, Integer>> pieces, Pair<Integer, Integer> kingPosition) {
         for (Pair<Integer, Integer> piece : pieces) {
             if (isAttacking(piece, kingPosition)) {
                 return true;
@@ -106,22 +116,12 @@ public class Bishop extends Piece {
         }
         return false;
     }
-    boolean isCheck;
-    private void Check(){
-        List<Pair<Integer, Integer>> pieces = new ArrayList<>();
+
+    private void Check() {
+        ArrayList<Pair<Integer, Integer>> pieces = new ArrayList<>();
         if(color)
             isCheck= isCheck(PiecesListBlack, kingPosition);
         if(!color)
             isCheck= isCheck(PiecesListWhite, kingPosition);
-    }
-
-    public void Generate_Bishop(){
-        int currentColumn = position.second;
-        int currentRow = position.first;
-
-        List<Pair<Integer, Integer>> possibleMoves = calculatePossibleBishopMoves(currentColumn, currentRow);
-        for(Pair<Integer, Integer> moves : possibleMoves) {
-            movesList.add(moves);
-        }
     }
 }
