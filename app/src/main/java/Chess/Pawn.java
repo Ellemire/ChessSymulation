@@ -10,14 +10,10 @@ public class Pawn extends Piece {
     //konstruktor
     public Pawn(Pair<Integer, Integer> position, boolean color) {
         super(position, color);
-
-        if(!color)//biały
-            PiecesListWhite.add(position);
-        if(color)//czarny
-            PiecesListBlack.add(position);
     }
 
-    public ArrayList<Pair<Integer, Integer>> calculatePossiblePawnMoves() {
+    @Override
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
 
         int forwardRow;
@@ -59,28 +55,6 @@ public class Pawn extends Piece {
         return possibleMoves;
     }
 
-    private static boolean isValidSquare(int column, int row) {
-        return column >= 0 && column < 8 && row >= 0 && row < 8;
-    }
-
-    private boolean IsNotOccupied (int column, int row) {
-        Pair<Integer, Integer> pair = new Pair<>(column, row);
-        if (!color && PiecesListWhite.contains(pair))
-            return false;
-        if (color && PiecesListBlack.contains(pair))
-            return false;
-        return true;
-    }
-
-    private boolean isCheck(ArrayList<Pair<Integer, Integer>> pieces, Pair<Integer, Integer> kingPosition) {
-        for (Pair<Integer, Integer> piece : pieces) {
-            if (isAttacking(piece, kingPosition)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static boolean isAttacking(Pair<Integer, Integer> piece, Pair<Integer, Integer> kingPosition) {
         int pieceColumn = piece.first;
         int pieceRow = piece.second;
@@ -111,13 +85,5 @@ public class Pawn extends Piece {
         }
 
         return false;
-    }
-
-    private void Check(){
-        ArrayList<Pair<Integer, Integer>> pieces = new ArrayList<>();
-        if(color)
-            isCheck= isCheck(PiecesListBlack, kingPosition);
-        if(!color)
-            isCheck= isCheck(PiecesListWhite, kingPosition);
     }
 }

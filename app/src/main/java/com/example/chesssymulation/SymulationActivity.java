@@ -33,6 +33,7 @@ public class SymulationActivity extends AppCompatActivity {
     ImageView img_G1, img_G2, img_G3, img_G4, img_G5, img_G6, img_G7, img_G8;
     ImageView img_H1, img_H2, img_H3, img_H4, img_H5, img_H6, img_H7, img_H8;
     
+    ArrayList<Piece> whitePieces, blackPieces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,9 @@ public class SymulationActivity extends AppCompatActivity {
             board_prepare = DataHolder.getData();
         pieces = new ArrayList<>();
 
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
+
         //dodawanie figur do tablicy
         for (ArrayList<ImageButton> row : board_prepare) {
             for (ImageButton button : row) {
@@ -135,56 +139,72 @@ public class SymulationActivity extends AppCompatActivity {
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_king);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_king);
                 }
-                if(tag.equals("wBishop")){
+                else if(tag.equals("wBishop")){
                     pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_bishop);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_bishop);
                 }
-                if(tag.equals("bBishop")){
+                else if(tag.equals("bBishop")){
                     pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_bishop);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_bishop);
                 }
-                if(tag.equals("bRook")){
+                else if(tag.equals("bRook")){
                     pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_rook);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_rook);
                 }
-                if(tag.equals("wRook")){
+                else if(tag.equals("wRook")){
                     pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_rook);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_rook);
                 }
-                if(tag.equals("bKnight")){
+                else if(tag.equals("bKnight")){
                     pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_knight);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_knight);
                 }
-                if(tag.equals("wKnight")){
+                else if(tag.equals("wKnight")){
                     pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_knight);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_knight);
                 }
-                if(tag.equals("bQueen")){
+                else if(tag.equals("bQueen")){
                     pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_queen);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_queen);
                 }
-                if(tag.equals("wQueen")){
+                else if(tag.equals("wQueen")){
                     pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_queen);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_queen);
                 }
-                if(tag.equals("bPawn")){
+                else if(tag.equals("bPawn")){
                     pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_pawn);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_pawn);
                 }
-                if(tag.equals("wPawn")){
+                else if(tag.equals("wPawn")){
                     pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_pawn);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_pawn);
                 }
+                if(tag.length() != 0 && tag.charAt(0) == 'w')
+                    whitePieces.add(pieces.get(pieces.size() - 1));
+                else
+                    blackPieces.add(pieces.get(pieces.size() - 1));
+            }
+        }
+
+        boolean whiteTurn = true;
+        while(true)
+        {
+            makeMove(whiteTurn);
+            whiteTurn = !whiteTurn;
+            try {
+                wait(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -197,5 +217,15 @@ public class SymulationActivity extends AppCompatActivity {
         Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
         piece.setPosition(move);
         board[piece.getPosition().first][piece.getPosition().second].setImageResource(piece.getPicture());
+    }
+
+    //Symulacja
+    private void makeMove(Boolean whiteTurn)
+    {
+        Random rand = new Random();
+        if(whiteTurn)
+        {
+            movePiece(whitePieces.get(rand.nextInt(whitePieces.size())));
+        }
     }
 }

@@ -3,17 +3,13 @@ package Chess;
 import android.util.Pair;
 import java.util.ArrayList;
 
-public class Piece {
+public abstract class Piece {
 
     Pair<Integer, Integer> position;
-    Pair<Integer, Integer> kingPosition;
     boolean color;
     ArrayList<Pair<Integer, Integer>> movesList;
 
     private int picture;
-
-    static ArrayList<Pair<Integer,Integer>> PiecesListWhite = null;
-    static ArrayList<Pair<Integer,Integer>> PiecesListBlack = null;
 
     //konstruktor
     public Piece(Pair<Integer, Integer> position, boolean color) {
@@ -34,20 +30,6 @@ public class Piece {
     }
     public void setPosition(Pair<Integer, Integer> position) {
         this.position = position;
-    }
-
-    public ArrayList<Pair<Integer, Integer>> getPiecesListWhite() {
-        return PiecesListWhite;
-    }
-    public void setPiecesListWhite(ArrayList<Pair<Integer, Integer>> piecesListWhite) {
-        PiecesListWhite = piecesListWhite;
-    }
-
-    public ArrayList<Pair<Integer, Integer>> getPiecesListBlack() {
-        return PiecesListBlack;
-    }
-    public void setPiecesListBlack(ArrayList<Pair<Integer, Integer>> piecesListBlack) {
-        PiecesListBlack = piecesListBlack;
     }
 
     public ArrayList<Pair<Integer, Integer>> getMovesList() {
@@ -75,10 +57,35 @@ public class Piece {
         square.getPosition();
     }
 
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves()
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition)
     {
         return null;
     }
 
+    protected boolean isCheck(ArrayList<Piece> pieces, Pair<Integer, Integer> kingPosition)
+    {
+        for (Piece piece : pieces) {
+            if (isAttacking(piece, kingPosition)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
+        return false;
+    }
+
+    protected boolean isValidSquare(int column, int row) {
+        return column >= 0 && column < 8 && row >= 0 && row < 8;
+    }
+
+    protected boolean IsNotOccupied (int column, int row, ArrayList<Piece> white, ArrayList<Piece> black) {
+        Pair<Integer, Integer> pair = new Pair<>(column, row);
+        for(Piece piece : (color ? black : white))
+            if(piece.getPosition().equals(pair))
+                return false;
+        return true;
+    }
 }
 
