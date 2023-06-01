@@ -5,9 +5,15 @@ import android.util.Pair;
 import java.util.ArrayList;
 public class Pawn extends Piece {
 
+    int direction;
+
     //konstruktor
     public Pawn(Pair<Integer, Integer> position, boolean color) {
         super(position, color);
+        if(color)
+            direction=1;
+        if(!color)
+            direction=-1;
     }
 
     @Override
@@ -18,19 +24,18 @@ public class Pawn extends Piece {
         pieces.addAll(black);
 
         int forwardRow;
-        int doubleForwardRow;
+        int doubleForwardRow=0 ;
         int attackColumnLeft;
         int attackColumnRight;
 
         if (position.second == 1) {
-            forwardRow = position.second + 1;
-            doubleForwardRow = position.second + 2;
-        } else if (position.second == 6) {
-            forwardRow = position.second - 1;
-            doubleForwardRow = position.second - 2;
+            forwardRow = position.second + direction;
+            doubleForwardRow = position.second + 2*direction;
+        } else if (position.second == 6 ) {
+            forwardRow = position.second + direction;
+            doubleForwardRow = position.second + 2*direction;
         } else {
-            forwardRow = position.second + 1;
-            doubleForwardRow = position.second - 1;
+            forwardRow = position.second + direction;
         }
 
         attackColumnLeft = position.first - 1;
@@ -41,11 +46,11 @@ public class Pawn extends Piece {
         if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow,white,black) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(position.first, doubleForwardRow));
         }
-        if (isValidSquare(attackColumnLeft, forwardRow) && IsNotOccupied(attackColumnLeft, forwardRow,white,black) && !isCheck(pieces, kingPosition)) {
+        if (isValidSquare(attackColumnLeft, forwardRow) && !IsNotOccupied(attackColumnLeft, forwardRow,black,white) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(attackColumnLeft, forwardRow));
         }
 
-        if (isValidSquare(attackColumnRight, forwardRow) && IsNotOccupied(attackColumnRight, forwardRow,white,black) && !isCheck(pieces, kingPosition)) {
+        if (isValidSquare(attackColumnRight, forwardRow) && !IsNotOccupied(attackColumnRight, forwardRow,black,white) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(attackColumnRight, forwardRow));
         }
 
