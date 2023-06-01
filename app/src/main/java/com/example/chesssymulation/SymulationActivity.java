@@ -2,6 +2,7 @@ package com.example.chesssymulation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Pair;
 import android.widget.ImageButton;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import Chess.Bishop;
 import Chess.King;
@@ -129,50 +131,30 @@ public class SymulationActivity extends AppCompatActivity {
         for (ArrayList<ImageButton> row : board_prepare) {
             for (ImageButton button : row) {
                 String tag = button.getTag().toString();
-                if(tag.equals("wKing")){
+                if(tag.equals("wPawn")){
+                    pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
+                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_pawn);
+                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_pawn);
+                }
+                else if(tag.equals("wKing")){
                     pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true, false));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_king);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_king);
-                }
-                else if(tag.equals("bKing")){
-                    pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false, false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_king);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_king);
                 }
                 else if(tag.equals("wBishop")){
                     pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_bishop);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_bishop);
                 }
-                else if(tag.equals("bBishop")){
-                    pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_bishop);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_bishop);
-                }
-                else if(tag.equals("bRook")){
-                    pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_rook);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_rook);
-                }
                 else if(tag.equals("wRook")){
                     pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_rook);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_rook);
                 }
-                else if(tag.equals("bKnight")){
-                    pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_knight);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_knight);
-                }
                 else if(tag.equals("wKnight")){
                     pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_knight);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.w_knight);
-                }
-                else if(tag.equals("bQueen")){
-                    pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_queen);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_queen);
                 }
                 else if(tag.equals("wQueen")){
                     pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
@@ -184,39 +166,72 @@ public class SymulationActivity extends AppCompatActivity {
                     board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_pawn);
                     pieces.get(pieces.size() - 1).setPicture(R.drawable.b_pawn);
                 }
-                else if(tag.equals("wPawn")){
-                    pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_pawn);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_pawn);
+                else if(tag.equals("bKing")){
+                    pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false, false));
+                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_king);
+                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_king);
+                }
+                else if(tag.equals("bBishop")){
+                    pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_bishop);
+                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_bishop);
+                }
+                else if(tag.equals("bRook")){
+                    pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_rook);
+                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_rook);
+                }
+                else if(tag.equals("bKnight")){
+                    pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_knight);
+                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_knight);
+                }
+                else if(tag.equals("bQueen")){
+                    pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_queen);
+                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_queen);
                 }
                 if(tag.length() != 0 && tag.charAt(0) == 'w')
                     whitePieces.add(pieces.get(pieces.size() - 1));
-                else
+                else if(tag.length() != 0)
                     blackPieces.add(pieces.get(pieces.size() - 1));
             }
         }
 
-        boolean whiteTurn = true;
-        while(true)
-        {
-            makeMove(whiteTurn);
-            whiteTurn = !whiteTurn;
-            try {
-                wait(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        whiteTurn = true;
+        new Simulation().execute();
     }
 
+    boolean whiteTurn;
+
     //przesuwanie figur na planszy
-    private void movePiece(Piece piece) {
-        ArrayList<Pair<Integer, Integer>> moves = piece.calculatePossibleMoves();
-        board[piece.getPosition().first][piece.getPosition().second].setImageResource(0);
-        Random rand = new Random();
-        Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
-        piece.setPosition(move);
-        board[piece.getPosition().first][piece.getPosition().second].setImageResource(piece.getPicture());
+    private boolean movePiece(Piece piece_movable) {
+        Pair<Integer,Integer> kingPosition = null;
+        boolean color = piece_movable.isColor();
+        for (Piece piece : pieces) {
+            if(piece instanceof King){
+                if (color != piece.isColor())
+                kingPosition = piece.getPosition();
+            }
+        }
+        if(kingPosition != null){
+            ArrayList<Pair<Integer, Integer>> moves = piece_movable.calculatePossibleMoves(whitePieces, blackPieces, kingPosition);
+            if(moves.size() == 0) {
+                return false;
+            }
+            Random rand = new Random();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(0);
+                    Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
+                    piece_movable.setPosition(move);
+                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
+                }
+            });
+
+        }
+        return true;
     }
 
     //Symulacja
@@ -224,8 +239,28 @@ public class SymulationActivity extends AppCompatActivity {
     {
         Random rand = new Random();
         if(whiteTurn)
-        {
-            movePiece(whitePieces.get(rand.nextInt(whitePieces.size())));
+            while(!movePiece(whitePieces.get(rand.nextInt(whitePieces.size()))));
+        else
+            while(!movePiece(blackPieces.get(rand.nextInt(blackPieces.size()))));
+    }
+
+    private class Simulation extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            int licznik = 0;
+            while(licznik < 30)
+            {
+                makeMove(whiteTurn);
+                whiteTurn = !whiteTurn;
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                licznik++;
+            }
+            return null;
         }
     }
 }

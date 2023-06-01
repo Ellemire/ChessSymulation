@@ -48,14 +48,6 @@ public abstract class Piece {
     }
 
     //inne
-    public boolean isMovable () {
-        return false;
-    }
-
-    public void Position() {
-        Square square = new Square(10, 10); // tu jakoś przekażesz dane z szachownicy
-        square.getPosition();
-    }
 
     public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition)
     {

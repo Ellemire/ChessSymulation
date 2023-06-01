@@ -167,10 +167,15 @@ public class PrepareActivity extends AppCompatActivity {
         btn_startSymulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PrepareActivity.this, SymulationActivity.class);
-                //intent.putExtra("board", board);
-                DataHolder.setData(board);
-                startActivity(intent);
+//                if (isbKing && iswKing) {
+                    Intent intent = new Intent(PrepareActivity.this, SymulationActivity.class);
+                    //intent.putExtra("board", board);
+                    DataHolder.setData(board);
+                    startActivity(intent);
+//                }
+//                else {
+                    Toast.makeText(PrepareActivity.this, "You should put both kings!", Toast.LENGTH_LONG).show();
+//                }
             }
         });
 

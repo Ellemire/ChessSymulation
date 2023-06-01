@@ -1,7 +1,5 @@
 package Chess;
 
-import static Chess.Piece.PiecesListBlack;
-import static Chess.Piece.PiecesListWhite;
 
 import android.util.Pair;
 
@@ -16,8 +14,4 @@ public class Square {
         return position;
     }
 
-    //sprawdza czy pole jest zajęte
-    private boolean IsFree () {
-        return !PiecesListWhite.contains(position) && !PiecesListBlack.contains(position);
-    }
 }
