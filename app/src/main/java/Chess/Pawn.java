@@ -24,14 +24,11 @@ public class Pawn extends Piece {
         pieces.addAll(black);
 
         int forwardRow;
-        int doubleForwardRow=0 ;
+        int doubleForwardRow=-1 ;
         int attackColumnLeft;
         int attackColumnRight;
 
-        if (position.second == 1) {
-            forwardRow = position.second + direction;
-            doubleForwardRow = position.second + 2*direction;
-        } else if (position.second == 6 ) {
+        if ((position.second == 1 && direction > 0) || (position.second == 6 && direction < 0)) {
             forwardRow = position.second + direction;
             doubleForwardRow = position.second + 2*direction;
         } else {
@@ -40,10 +37,10 @@ public class Pawn extends Piece {
 
         attackColumnLeft = position.first - 1;
         attackColumnRight = position.first + 1;
-        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow,white,black) && !isCheck(pieces, kingPosition)){
+        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow, white, black) && IsNotOccupied(position.first, forwardRow, black, white) && !isCheck(pieces, kingPosition)){
             possibleMoves.add(new Pair<>(position.first, forwardRow));
         }
-        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow,white,black) && !isCheck(pieces, kingPosition)) {
+        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow, white, black) && IsNotOccupied(position.first, doubleForwardRow, black, white) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(position.first, doubleForwardRow));
         }
         if (isValidSquare(attackColumnLeft, forwardRow) && !IsNotOccupied(attackColumnLeft, forwardRow,black,white) && !isCheck(pieces, kingPosition)) {
@@ -61,16 +58,6 @@ public class Pawn extends Piece {
     protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
 
         // Sprawdzamy, czy figura atakuje króla jako pionek
-        int direction = 1; // Kierunek ataku pionka (1 - w górę, -1 - w dół)
-        if (piece.getPosition().second > kingPosition.second) {
-            direction = -1;
-        }
-        if (piece.getPosition().first == kingPosition.first + 1 || piece.getPosition().first == kingPosition.first - 1) {
-            if (piece.getPosition().second == kingPosition.second + direction) {
-                return true;
-            }
-        }
-
-        return false;
+        return piece.position.second == kingPosition.second + direction && (piece.position.first == kingPosition.first + 1 || piece.position.first == kingPosition.first - 1);
     }
 }

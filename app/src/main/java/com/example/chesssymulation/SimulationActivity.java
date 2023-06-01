@@ -20,7 +20,7 @@ import Chess.Piece;
 import Chess.Queen;
 import Chess.Rook;
 
-public class SymulationActivity extends AppCompatActivity {
+public class SimulationActivity extends AppCompatActivity {
 
     ArrayList<ArrayList<ImageButton>> board_prepare;
     ArrayList<Piece> pieces;
@@ -131,73 +131,79 @@ public class SymulationActivity extends AppCompatActivity {
         for (ArrayList<ImageButton> row : board_prepare) {
             for (ImageButton button : row) {
                 String tag = button.getTag().toString();
-                if(tag.equals("wPawn")){
-                    pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_pawn);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_pawn);
-                }
-                else if(tag.equals("wKing")){
-                    pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true, false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_king);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_king);
-                }
-                else if(tag.equals("wBishop")){
-                    pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_bishop);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_bishop);
-                }
-                else if(tag.equals("wRook")){
-                    pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_rook);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_rook);
-                }
-                else if(tag.equals("wKnight")){
-                    pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_knight);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_knight);
-                }
-                else if(tag.equals("wQueen")){
-                    pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_queen);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.w_queen);
-                }
-                else if(tag.equals("bPawn")){
-                    pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_pawn);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_pawn);
-                }
-                else if(tag.equals("bKing")){
-                    pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false, false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_king);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_king);
-                }
-                else if(tag.equals("bBishop")){
-                    pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_bishop);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_bishop);
-                }
-                else if(tag.equals("bRook")){
-                    pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_rook);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_rook);
-                }
-                else if(tag.equals("bKnight")){
-                    pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_knight);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_knight);
-                }
-                else if(tag.equals("bQueen")){
-                    pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
-                    board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_queen);
-                    pieces.get(pieces.size() - 1).setPicture(R.drawable.b_queen);
-                }
                 if(tag.length() != 0 && tag.charAt(0) == 'w')
+                {
+                    switch (tag) {
+                        case "wPawn":
+                            pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_pawn);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.w_pawn);
+                            break;
+                        case "wKing":
+                            pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true, false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_king);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.w_king);
+                            break;
+                        case "wBishop":
+                            pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_bishop);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.w_bishop);
+                            break;
+                        case "wRook":
+                            pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_rook);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.w_rook);
+                            break;
+                        case "wKnight":
+                            pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_knight);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.w_knight);
+                            break;
+                        case "wQueen":
+                            pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_queen);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.w_queen);
+                            break;
+                    }
                     whitePieces.add(pieces.get(pieces.size() - 1));
-                else if(tag.length() != 0)
+                }
+                else if(tag.length() != 0) {
+                    switch (tag) {
+                        case "bPawn":
+                            pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_pawn);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.b_pawn);
+                            break;
+                        case "bKing":
+                            pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false, false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_king);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.b_king);
+                            break;
+                        case "bBishop":
+                            pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_bishop);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.b_bishop);
+                            break;
+                        case "bRook":
+                            pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_rook);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.b_rook);
+                            break;
+                        case "bKnight":
+                            pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_knight);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.b_knight);
+                            break;
+                        case "bQueen":
+                            pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
+                            board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_queen);
+                            pieces.get(pieces.size() - 1).setPicture(R.drawable.b_queen);
+                            break;
+                    }
                     blackPieces.add(pieces.get(pieces.size() - 1));
+                }
             }
         }
-
         whiteTurn = true;
         new Simulation().execute();
     }
@@ -210,8 +216,8 @@ public class SymulationActivity extends AppCompatActivity {
         boolean color = piece_movable.isColor();
         for (Piece piece : pieces) {
             if(piece instanceof King){
-                if (color != piece.isColor())
-                kingPosition = piece.getPosition();
+                if (color == piece.isColor())
+                    kingPosition = piece.getPosition();
             }
         }
         if(kingPosition != null){
@@ -225,11 +231,22 @@ public class SymulationActivity extends AppCompatActivity {
                 public void run() {
                     board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(0);
                     Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
+                    for(Piece piece : pieces)
+                    {
+                        if(piece.getPosition().equals(move))
+                        {
+                            if(piece.isColor())
+                                whitePieces.remove(piece);
+                            else
+                                blackPieces.remove(piece);
+                            pieces.remove(piece);
+                            break;
+                        }
+                    }
                     piece_movable.setPosition(move);
                     board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
                 }
             });
-
         }
         return true;
     }
@@ -249,12 +266,12 @@ public class SymulationActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             int licznik = 0;
-            while(licznik < 30) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
+            while(licznik < 50) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
                 makeMove(whiteTurn);
                 whiteTurn = !whiteTurn;
                 try {
-                    TimeUnit.SECONDS.sleep(2); //czas trwania ruchu
+                    TimeUnit.SECONDS.sleep(1); //czas trwania ruchu
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

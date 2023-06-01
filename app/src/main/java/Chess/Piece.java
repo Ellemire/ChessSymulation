@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public abstract class Piece {
 
-    Pair<Integer, Integer> position;
-    boolean color;
-    ArrayList<Pair<Integer, Integer>> movesList;
+    protected Pair<Integer, Integer> position;
+    protected boolean color;
+    protected ArrayList<Pair<Integer, Integer>> movesList;
 
-    private int picture;
+    protected int picture;
 
     //konstruktor
     public Piece(Pair<Integer, Integer> position, boolean color) {
@@ -57,9 +57,9 @@ public abstract class Piece {
     protected boolean isCheck(ArrayList<Piece> pieces, Pair<Integer, Integer> kingPosition)
     {
         for (Piece piece : pieces) {
-            if (isAttacking(piece, kingPosition)) {
-                return true;
-            }
+            if(piece.color != color)
+                if (isAttacking(piece, kingPosition))
+                    return true;
         }
         return false;
     }
@@ -74,7 +74,7 @@ public abstract class Piece {
 
     protected boolean IsNotOccupied (int column, int row, ArrayList<Piece> white, ArrayList<Piece> black) {
         Pair<Integer, Integer> pair = new Pair<>(column, row);
-        for(Piece piece : (color ? black : white))
+        for(Piece piece : (color ? white : black))
             if(piece.getPosition().equals(pair))
                 return false;
         return true;
