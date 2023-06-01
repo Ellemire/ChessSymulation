@@ -249,12 +249,12 @@ public class SymulationActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             int licznik = 0;
-            while(licznik < 30)
+            while(licznik < 30) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
                 makeMove(whiteTurn);
                 whiteTurn = !whiteTurn;
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(2); //czas trwania ruchu
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

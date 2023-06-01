@@ -167,15 +167,15 @@ public class PrepareActivity extends AppCompatActivity {
         btn_startSymulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (isbKing && iswKing) {
+                if (isbKing && iswKing) {
                     Intent intent = new Intent(PrepareActivity.this, SymulationActivity.class);
                     //intent.putExtra("board", board);
                     DataHolder.setData(board);
                     startActivity(intent);
-//                }
-//                else {
+                }
+                else {
                     Toast.makeText(PrepareActivity.this, "You should put both kings!", Toast.LENGTH_LONG).show();
-//                }
+                }
             }
         });
 
@@ -238,15 +238,14 @@ public class PrepareActivity extends AppCompatActivity {
                     if(clicked.getTag().equals("wKing"))
                     {
                         iswKing = false;
-                        clicked.setTag("");
                     }
                     if(clicked.getTag().equals("bKing"))
                     {
                         isbKing = false;
-                        clicked.setTag("");
                     }
                 }
                 clicked.setImageResource(0);
+                clicked.setTag("");
             }
         });
 
