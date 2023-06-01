@@ -13,11 +13,6 @@ public class King extends Piece {
     public King(Pair<Integer, Integer> position, boolean color, boolean wasMoved) {
         super(position, color);
         this.wasMoved = wasMoved;
-
-        if(!color)//biały
-            PiecesListWhite.add(position);
-        if(color)//czarny
-            PiecesListBlack.add(position);
     }
 
     //gettery i settery
@@ -30,14 +25,17 @@ public class King extends Piece {
 
     //sprawdza możliwe ruchy dla króla
     @Override
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition) {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
+        ArrayList<Piece> pieces = new ArrayList<>();
+        pieces.addAll(white);
+        pieces.addAll(black);
 
         for (int[] move : MOVES) {
             int newColumn = position.first + move[0];
             int newRow = position.second + move[1];
 
-            if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow)) {
+            if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow,white,black)) {
                 possibleMoves.add(new Pair<>(newColumn, newRow));
             }
         }
@@ -45,18 +43,4 @@ public class King extends Piece {
         return possibleMoves;
     }
 
-    //sprawdza czy istnieje dane pole
-    private boolean isValidSquare(int column, int row) {
-        return column >= 0 && column < 8 && row >= 0 && row < 8;
-    }
-
-    //sprawdza czy pole jest zajęte
-    private boolean IsNotOccupied (int column, int row) {
-        Pair<Integer, Integer> pair = new Pair<>(column, row);
-        if (!color && PiecesListWhite.contains(pair))
-            return false;
-        if (color && PiecesListBlack.contains(pair))
-            return false;
-        return true;
-    }
 }

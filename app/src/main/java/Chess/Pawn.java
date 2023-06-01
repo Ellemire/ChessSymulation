@@ -5,16 +5,17 @@ import android.util.Pair;
 import java.util.ArrayList;
 public class Pawn extends Piece {
 
-    boolean isCheck;
-
     //konstruktor
     public Pawn(Pair<Integer, Integer> position, boolean color) {
         super(position, color);
     }
 
     @Override
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition) {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
+        ArrayList<Piece> pieces = new ArrayList<>();
+        pieces.addAll(white);
+        pieces.addAll(black);
 
         int forwardRow;
         int doubleForwardRow;
@@ -34,52 +35,33 @@ public class Pawn extends Piece {
 
         attackColumnLeft = position.first - 1;
         attackColumnRight = position.first + 1;
-        Check();
-        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow) && !isCheck){
+        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow,white,black) && !isCheck(pieces, kingPosition)){
             possibleMoves.add(new Pair<>(position.first, forwardRow));
         }
-        Check();
-        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow) && !isCheck) {
+        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow,white,black) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(position.first, doubleForwardRow));
         }
-        Check();
-        if (isValidSquare(attackColumnLeft, forwardRow) && IsNotOccupied(attackColumnLeft, forwardRow) && !isCheck) {
+        if (isValidSquare(attackColumnLeft, forwardRow) && IsNotOccupied(attackColumnLeft, forwardRow,white,black) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(attackColumnLeft, forwardRow));
         }
 
-        Check();
-        if (isValidSquare(attackColumnRight, forwardRow) && IsNotOccupied(attackColumnRight, forwardRow) && !isCheck) {
+        if (isValidSquare(attackColumnRight, forwardRow) && IsNotOccupied(attackColumnRight, forwardRow,white,black) && !isCheck(pieces, kingPosition)) {
             possibleMoves.add(new Pair<>(attackColumnRight, forwardRow));
         }
 
         return possibleMoves;
     }
 
-    private static boolean isAttacking(Pair<Integer, Integer> piece, Pair<Integer, Integer> kingPosition) {
-        int pieceColumn = piece.first;
-        int pieceRow = piece.second;
-        int kingColumn = kingPosition.first;
-        int kingRow = kingPosition.second;
-
-        // Sprawdzamy, czy figura atakuje króla na wprost (pionowo, poziomo lub na skos)
-        if (pieceColumn == kingColumn || pieceRow == kingRow || Math.abs(pieceColumn - kingColumn) == Math.abs(pieceRow - kingRow)) {
-            return true;
-        }
-
-        // Sprawdzamy, czy figura atakuje króla jako skoczek
-        int columnDiff = Math.abs(pieceColumn - kingColumn);
-        int rowDiff = Math.abs(pieceRow - kingRow);
-        if (columnDiff == 2 && rowDiff == 1 || columnDiff == 1 && rowDiff == 2) {
-            return true;
-        }
+    @Override
+    protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
 
         // Sprawdzamy, czy figura atakuje króla jako pionek
         int direction = 1; // Kierunek ataku pionka (1 - w górę, -1 - w dół)
-        if (pieceRow > kingRow) {
+        if (piece.getPosition().second > kingPosition.second) {
             direction = -1;
         }
-        if (pieceColumn == kingColumn + 1 || pieceColumn == kingColumn - 1) {
-            if (pieceRow == kingRow + direction) {
+        if (piece.getPosition().first == kingPosition.first + 1 || piece.getPosition().first == kingPosition.first - 1) {
+            if (piece.getPosition().second == kingPosition.second + direction) {
                 return true;
             }
         }
