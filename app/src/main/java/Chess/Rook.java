@@ -22,7 +22,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition) {
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Piece yourKing) {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
         ArrayList<Piece> pieces = new ArrayList<>();
         pieces.addAll(white);
@@ -30,24 +30,24 @@ public class Rook extends Piece {
 
         // Ruchy wzdłuż kolumn
         for (int row = 0; row < 8; row++) {
-            if (row != position.second && IsNotOccupied(position.first, row, white, black) && !isCheck(pieces, kingPosition)) {
+            if (row != position.second && IsNotOccupied(position.first, row, white, black) && !isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(position.first, row));
             }
         }
 
         // Ruchy wzdłuż wierszy
         for (int column = 0; column < 8; column++) {
-            if (column != position.first && IsNotOccupied(column, position.second, white, black) && !isCheck(pieces, kingPosition)) {
+            if (column != position.first && IsNotOccupied(column, position.second, white, black) && !isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(column, position.second));
             }
         }
-
+        movesList = possibleMoves;
         return possibleMoves;
     }
 
     @Override
     protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
         // Sprawdzamy, czy figura atakuje króla na wprost (pionowo, poziomo)
-        return piece.getPosition().first.equals(kingPosition.first) || piece.getPosition().second.equals(kingPosition.second);
+        return piece.getPosition().first.equals(oppositeKingPosition.first) || piece.getPosition().second.equals(oppositeKingPosition.second);
     }
 }

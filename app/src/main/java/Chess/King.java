@@ -23,9 +23,9 @@ public class King extends Piece {
         this.wasMoved = wasMoved;
     }
 
-    //sprawdza możliwe ruchy dla króla
+    //sprawdza możliwe ruchy dla króla + dodać roszadę
     @Override
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition) {
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Piece yourKing) {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
         ArrayList<Piece> pieces = new ArrayList<>();
         pieces.addAll(white);
@@ -35,11 +35,11 @@ public class King extends Piece {
             int newColumn = position.first + move[0];
             int newRow = position.second + move[1];
 
-            if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow,white,black)) {
+            if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow, white, black)) {
                 possibleMoves.add(new Pair<>(newColumn, newRow));
             }
         }
-
+        movesList = possibleMoves;
         return possibleMoves;
     }
 

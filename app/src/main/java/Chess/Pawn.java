@@ -16,8 +16,9 @@ public class Pawn extends Piece {
             direction=-1;
     }
 
+    //dodać bicie w przelocie
     @Override
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Pair<Integer, Integer> kingPosition) {
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Piece yourKing) {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
         ArrayList<Piece> pieces = new ArrayList<>();
         pieces.addAll(white);
@@ -37,27 +38,25 @@ public class Pawn extends Piece {
 
         attackColumnLeft = position.first - 1;
         attackColumnRight = position.first + 1;
-        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow, white, black) && IsNotOccupied(position.first, forwardRow, black, white) && !isCheck(pieces, kingPosition)){
+        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow, white, black) && IsNotOccupied(position.first, forwardRow, black, white) && !isCheck(pieces, yourKing)){
             possibleMoves.add(new Pair<>(position.first, forwardRow));
         }
-        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow, white, black) && IsNotOccupied(position.first, doubleForwardRow, black, white) && !isCheck(pieces, kingPosition)) {
+        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow, white, black) && IsNotOccupied(position.first, doubleForwardRow, black, white) && !isCheck(pieces, yourKing)) {
             possibleMoves.add(new Pair<>(position.first, doubleForwardRow));
         }
-        if (isValidSquare(attackColumnLeft, forwardRow) && !IsNotOccupied(attackColumnLeft, forwardRow,black,white) && !isCheck(pieces, kingPosition)) {
+        if (isValidSquare(attackColumnLeft, forwardRow) && !IsNotOccupied(attackColumnLeft, forwardRow,black,white) && !isCheck(pieces, yourKing)) {
             possibleMoves.add(new Pair<>(attackColumnLeft, forwardRow));
         }
 
-        if (isValidSquare(attackColumnRight, forwardRow) && !IsNotOccupied(attackColumnRight, forwardRow,black,white) && !isCheck(pieces, kingPosition)) {
+        if (isValidSquare(attackColumnRight, forwardRow) && !IsNotOccupied(attackColumnRight, forwardRow,black,white) && !isCheck(pieces, yourKing)) {
             possibleMoves.add(new Pair<>(attackColumnRight, forwardRow));
         }
-
+        movesList = possibleMoves;
         return possibleMoves;
     }
 
     @Override
-    protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
-
-        // Sprawdzamy, czy figura atakuje króla jako pionek
-        return piece.position.second == kingPosition.second + direction && (piece.position.first == kingPosition.first + 1 || piece.position.first == kingPosition.first - 1);
+    protected boolean isAttacking(Piece piece, Pair<Integer, Integer> oppositeKingPosition) {
+        return piece.position.second == oppositeKingPosition.second + direction && (piece.position.first == oppositeKingPosition.first + 1 || piece.position.first == oppositeKingPosition.first - 1);
     }
 }

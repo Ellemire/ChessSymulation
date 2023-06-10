@@ -20,6 +20,9 @@ import Chess.Piece;
 import Chess.Queen;
 import Chess.Rook;
 
+/**
+ *  klasa odpowiedzialna za ekran symulacji
+ */
 public class SimulationActivity extends AppCompatActivity {
 
     ArrayList<ArrayList<ImageButton>> board_prepare;
@@ -210,26 +213,40 @@ public class SimulationActivity extends AppCompatActivity {
 
     boolean whiteTurn;
 
-    //przesuwanie figur na planszy
+    /** metoda przesuwająca bierki na planszy
+     * @param piece_movable bierka która ma zostać przesunięta
+     * @return czy pomyślnie przesunięto bierkę
+     */
     private boolean movePiece(Piece piece_movable) {
-        Pair<Integer,Integer> kingPosition = null;
-        boolean color = piece_movable.isColor();
-        for (Piece piece : pieces) {
-            if(piece instanceof King){
-                if (color == piece.isColor())
-                    kingPosition = piece.getPosition();
-            }
-        }
-        if(kingPosition != null){
-            ArrayList<Pair<Integer, Integer>> moves = piece_movable.calculatePossibleMoves(whitePieces, blackPieces, kingPosition);
+        Piece king = find_King(piece_movable.isColor());
+        if(king.getPosition() != null){
+            //znajduje dostępne ruchy
+            ArrayList<Pair<Integer, Integer>> moves = piece_movable.calculatePossibleMoves(whitePieces, blackPieces, king);
+            //sprawdza czy istnieją ruchy dla wybranej figury
             if(moves.size() == 0) {
                 return false;
             }
+            lastlyMovedPiece = piece_movable;
+            //wybiera ruch który ma zostać wykonany przez wybraną figurę i przesuwa ją
             Random rand = new Random();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(0);
+                    if(clicked != null){
+                        if((clicked.first + clicked.second) % 2 == 0)
+                            board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_black));
+                        else
+                            board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_white));
+                    }
+                    if(lastly_moved_square != null){
+                        if((lastly_moved_square.first + lastly_moved_square.second) % 2 == 0)
+                            board[lastly_moved_square.first][lastly_moved_square.second].getBackground().setTint(getResources().getColor(R.color.chess_black));
+                        else
+                            board[lastly_moved_square.first][lastly_moved_square.second].getBackground().setTint(getResources().getColor(R.color.chess_white));
+                    }
+                    clicked = piece_movable.getPosition();
+                    board[clicked.first][clicked.second].setImageResource(0);
+                    board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                     Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
                     for(Piece piece : pieces)
                     {
@@ -244,14 +261,18 @@ public class SimulationActivity extends AppCompatActivity {
                         }
                     }
                     piece_movable.setPosition(move);
+                    lastly_moved_square = move;
                     board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
+                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                 }
             });
         }
         return true;
     }
 
-    //Symulacja
+    /** losuje bierkę do wykonania ruchu, wywołuje wykonanie ruchu
+     * @param whiteTurn kolor bierek które mają się aktualnie ruszyć
+     */
     private void makeMove(Boolean whiteTurn)
     {
         Random rand = new Random();
@@ -261,6 +282,25 @@ public class SimulationActivity extends AppCompatActivity {
             while(!movePiece(blackPieces.get(rand.nextInt(blackPieces.size()))));
     }
 
+    /** metoda znajdująca króla na liście figur
+     * @param color kolor szukanego króla
+     * @return szukany król
+     */
+    //znajduje króla
+    private King find_King(boolean color){
+        for (Piece piece : pieces) {
+            if(piece instanceof King){
+                if (color == piece.isColor())
+                    return (King) piece;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * klasa odpowiedzialna za symulowanie gry w szachy
+     */
     private class Simulation extends AsyncTask<Void, Void, Void> {
 
         @Override
