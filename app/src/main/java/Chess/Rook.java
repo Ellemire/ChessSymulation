@@ -30,6 +30,9 @@ public class Rook extends Piece {
 
         // Ruchy wzdłuż kolumn
         for (int row = 0; row < 8; row++) {
+            if (!IsNotOccupied(position.first, row, white, black))
+                break;
+
             if (row != position.second && IsNotOccupied(position.first, row, white, black) && !isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(position.first, row));
             }
@@ -37,6 +40,9 @@ public class Rook extends Piece {
 
         // Ruchy wzdłuż wierszy
         for (int column = 0; column < 8; column++) {
+            if(!IsNotOccupied(column, position.second, white, black))
+                break;
+
             if (column != position.first && IsNotOccupied(column, position.second, white, black) && !isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(column, position.second));
             }
@@ -48,6 +54,6 @@ public class Rook extends Piece {
     @Override
     protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
         // Sprawdzamy, czy figura atakuje króla na wprost (pionowo, poziomo)
-        return piece.getPosition().first.equals(oppositeKingPosition.first) || piece.getPosition().second.equals(oppositeKingPosition.second);
+        return piece.getPosition().first.equals(kingPosition.first) || piece.getPosition().second.equals(kingPosition.second);
     }
 }

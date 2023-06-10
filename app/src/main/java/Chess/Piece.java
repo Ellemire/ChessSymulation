@@ -66,11 +66,11 @@ public abstract class Piece {
         return null;
     }
 
-    protected boolean isCheck(ArrayList<Piece> pieces, Pair<Integer, Integer> kingPosition)
+    protected boolean isCheck(ArrayList<Piece> pieces, Piece kingPosition)
     {
         for (Piece piece : pieces) {
             if(piece.color != color)
-                if (isAttacking(piece, kingPosition))
+                if (isAttacking(piece, kingPosition.position))
                     return true;
         }
         return false;

@@ -19,6 +19,8 @@ public class Queen extends Piece {
         pieces.addAll(black);
         // Ruchy w pionie
         for (int row = 0; row < 8; row++) {
+            if (!IsNotOccupied(position.first, row, white, black))
+                break;
             if (row != position.second && IsNotOccupied(position.first, row, white, black) && !isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(position.first, row));
             }
@@ -26,43 +28,65 @@ public class Queen extends Piece {
 
         // Ruchy w poziomie
         for (int column = 0; column < 8; column++) {
+            if(!IsNotOccupied(column, position.second, white, black))
+                break;
+
             if (column != position.first && IsNotOccupied(column, position.second, white, black) && !isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(column, position.second));
             }
         }
 
         // Ruchy na skosach
-        int column = position.first + 1;
-        int row = position.second + 1;
-        while (column < 8 && row < 8 && IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-            possibleMoves.add(new Pair<>(column, row));
-            column++;
-            row++;
+        for(int column = position.first + 1; column < 8; column++)
+        {
+            for(int row = position.second + 1; row < 8; row++ )
+            {
+                if (!IsNotOccupied(column, row, white, black))
+                    break;
+                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                    possibleMoves.add(new Pair<>(column, row));
+                }
+            }
         }
 
-        column = position.first - 1;
-        row = position.second + 1;
-        while (column >= 0 && row < 8 && IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-            possibleMoves.add(new Pair<>(column, row));
-            column--;
-            row++;
+
+
+        for(int column = position.first - 1; column >= 0; column++)
+        {
+            for(int row = position.second + 1; row < 8; row++ )
+            {
+                if (!IsNotOccupied(column, row, white, black))
+                    break;
+                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                    possibleMoves.add(new Pair<>(column, row));
+                }
+            }
         }
 
-        column = position.first + 1;
-        row = position.second - 1;
-        while (column < 8 && row >= 0 && IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-            possibleMoves.add(new Pair<>(column, row));
-            column++;
-            row--;
+        for(int column = position.first + 1; column < 8; column++)
+        {
+            for(int row = position.second - 1; row >= 0; row++ )
+            {
+                if (!IsNotOccupied(column, row, white, black))
+                    break;
+                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                    possibleMoves.add(new Pair<>(column, row));
+                }
+            }
         }
 
-        column = position.first - 1;
-        row = position.second - 1;
-        while (column >= 0 && row >= 0 && IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-            possibleMoves.add(new Pair<>(column, row));
-            column--;
-            row--;
+        for(int column = position.first - 1; column >= 0; column++)
+        {
+            for(int row = position.second - 1; row >= 0; row++ )
+            {
+                if (!IsNotOccupied(column, row, white, black))
+                    break;
+                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                    possibleMoves.add(new Pair<>(column, row));
+                }
+            }
         }
+
         movesList = possibleMoves;
         return possibleMoves;
     }
@@ -70,7 +94,7 @@ public class Queen extends Piece {
     @Override
     protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
         /// Sprawdzamy, czy figura atakuje króla na wprost (pionowo, poziomo lub na skos)
-        if (piece.getPosition().first == oppositeKingPosition.first || piece.getPosition().second == oppositeKingPosition.second || Math.abs(piece.getPosition().first- oppositeKingPosition.first) == Math.abs(piece.getPosition().second - oppositeKingPosition.second)) {
+        if (piece.getPosition().first == kingPosition.first || piece.getPosition().second == kingPosition.second || Math.abs(piece.getPosition().first- kingPosition.first) == Math.abs(piece.getPosition().second - kingPosition.second)) {
             return true;
         }
         return false;
