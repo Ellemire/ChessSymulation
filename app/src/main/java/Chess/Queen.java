@@ -37,6 +37,8 @@ public class Queen extends Piece {
         }
 
         // Ruchy na skosach
+
+        // Ruchy na prawo-górę
         for(int column = position.first + 1; column < 8; column++)
         {
             for(int row = position.second + 1; row < 8; row++ )
@@ -49,9 +51,8 @@ public class Queen extends Piece {
             }
         }
 
-
-
-        for(int column = position.first - 1; column >= 0; column++)
+        // Ruchy na lewo-górę
+        for(int column = position.first - 1; column >= 0; column--)
         {
             for(int row = position.second + 1; row < 8; row++ )
             {
@@ -63,9 +64,10 @@ public class Queen extends Piece {
             }
         }
 
+        // Ruchy na prawo-dół
         for(int column = position.first + 1; column < 8; column++)
         {
-            for(int row = position.second - 1; row >= 0; row++ )
+            for(int row = position.second - 1; row >= 0; row--)
             {
                 if (!IsNotOccupied(column, row, white, black))
                     break;
@@ -75,9 +77,10 @@ public class Queen extends Piece {
             }
         }
 
-        for(int column = position.first - 1; column >= 0; column++)
+        // Ruchy na lewo-dół
+        for(int column = position.first - 1; column >= 0; column--)
         {
-            for(int row = position.second - 1; row >= 0; row++ )
+            for(int row = position.second - 1; row >= 0; row--)
             {
                 if (!IsNotOccupied(column, row, white, black))
                     break;
