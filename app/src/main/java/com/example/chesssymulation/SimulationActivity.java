@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -37,7 +38,7 @@ public class SimulationActivity extends AppCompatActivity {
     ImageView img_F1, img_F2, img_F3, img_F4, img_F5, img_F6, img_F7, img_F8;
     ImageView img_G1, img_G2, img_G3, img_G4, img_G5, img_G6, img_G7, img_G8;
     ImageView img_H1, img_H2, img_H3, img_H4, img_H5, img_H6, img_H7, img_H8;
-    
+
     ArrayList<Piece> whitePieces, blackPieces;
 
     @Override
@@ -121,7 +122,7 @@ public class SimulationActivity extends AppCompatActivity {
                 {img_F1, img_F2, img_F3, img_F4, img_F5, img_F6, img_F7, img_F8},
                 {img_G1, img_G2, img_G3, img_G4, img_G5, img_G6, img_G7, img_G8},
                 {img_H1, img_H2, img_H3, img_H4, img_H5, img_H6, img_H7, img_H8}};
-        
+
         board_prepare = (ArrayList<ArrayList<ImageButton>>) getIntent().getSerializableExtra("board");
         if(DataHolder.hasData())
             board_prepare = DataHolder.getData();
@@ -212,6 +213,9 @@ public class SimulationActivity extends AppCompatActivity {
     }
 
     boolean whiteTurn;
+    Pair<Integer,Integer> clicked = null;
+    Pair<Integer,Integer> lastly_moved_square = null;
+    Piece lastlyMovedPiece = null;
 
     /** metoda przesuwająca bierki na planszy
      * @param piece_movable bierka która ma zostać przesunięta
@@ -250,6 +254,7 @@ public class SimulationActivity extends AppCompatActivity {
                     Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
                     for(Piece piece : pieces)
                     {
+                        //usuwa zbijaną figurę
                         if(piece.getPosition().equals(move))
                         {
                             if(piece.isColor())
@@ -297,7 +302,62 @@ public class SimulationActivity extends AppCompatActivity {
         return null;
     }
 
+    /** Metoda sprawdzająca czy jest szach
+     * @param color kolor dla którego sprawdzamy szacha
+     * @return czy król jest szachowany
+     */
+    private boolean isCheck(boolean color){
+        King king = find_King(color);
+        if (color) {
+            for (Piece piece : blackPieces){
+                if(piece.calculatePossibleMoves(whitePieces, blackPieces, king).contains(king.getPosition())){
+                    Toast.makeText(this, "Check!", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+            }
+        }
+        else {
+            for (Piece piece : whitePieces) {
+                if(piece.calculatePossibleMoves(whitePieces, blackPieces, king).contains(king.getPosition())){
+                    Toast.makeText(this, "Check!", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    /** metoda sprawdza czy po ruchu przeciwnika nastąpił mat
+     * @param color kolor figur, dla których sprawdzany jest mat
+     * @param lastlyMoved ostatnio ruszona figura przeciwnego koloru
+     * @param white lista białych bierek
+     * @param black lista czarnych bierek
+     * @return czy jest mat
+     */
+    private boolean isMate(boolean color, Piece lastlyMoved, ArrayList<Piece> white, ArrayList<Piece> black)
+    {
+        if (isCheck(color))
+        {
+            if (color)
+            {
+                for (Piece piece : blackPieces)
+                {
+
+                }
+            }
+            else
+            {
+                for (Piece piece : whitePieces)
+                {
+
+                }
+            }
+//            if(lastlyMoved.calculateDefenseMoves(find_King(!color),find_King(color),white,black).isEmpty()){
+            Toast.makeText(this, "Check!", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return false;
+    }
     /**
      * klasa odpowiedzialna za symulowanie gry w szachy
      */
@@ -306,8 +366,10 @@ public class SimulationActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             int licznik = 0;
+//            while(!isMate(whiteTurn,lastlyMovedPiece,whitePieces,blackPieces))
             while(licznik < 50) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
+                boolean check = isCheck(whiteTurn);
                 makeMove(whiteTurn);
                 whiteTurn = !whiteTurn;
                 try {
