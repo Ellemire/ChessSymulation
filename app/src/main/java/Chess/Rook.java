@@ -54,6 +54,17 @@ public class Rook extends Piece {
     @Override
     protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
         // Sprawdzamy, czy figura atakuje króla na wprost (pionowo, poziomo)
-        return piece.getPosition().first.equals(kingPosition.first) || piece.getPosition().second.equals(kingPosition.second);
+        if (piece.getPosition().first == kingPosition.first) {
+            /*for(int i=piece.getPosition().second; i<kingPosition.second; i++)
+            {
+                if(!IsNotOccupied(piece.getPosition().first,i,))
+            }*/
+            return true;
+        }
+        if (piece.getPosition().second == kingPosition.second)
+        {
+            return true;
+        }
+        return false;
     }
 }
