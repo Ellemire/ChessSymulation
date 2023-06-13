@@ -216,6 +216,7 @@ public class SimulationActivity extends AppCompatActivity {
     Pair<Integer,Integer> clicked = null;
     Pair<Integer,Integer> lastly_moved_square = null;
     Piece lastlyMovedPiece = null;
+    boolean endGame = false;
 
     /** metoda przesuwająca bierki na planszy
      * @param piece_movable bierka która ma zostać przesunięta
@@ -257,6 +258,8 @@ public class SimulationActivity extends AppCompatActivity {
                         //usuwa zbijaną figurę
                         if(piece.getPosition().equals(move))
                         {
+                            if(piece.getClass().equals(King.class))
+                                endGame = true;
                             if(piece.isColor())
                                 whitePieces.remove(piece);
                             else
@@ -267,7 +270,74 @@ public class SimulationActivity extends AppCompatActivity {
                     }
                     piece_movable.setPosition(move);
                     lastly_moved_square = move;
-                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
+                    if(piece_movable.getPosition().second == 7 && piece_movable.getPicture() == R.drawable.w_pawn)
+                    {
+                        Random random = new Random();
+                        switch (random.nextInt(4))
+                        {
+                            case 0:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_knight);
+                                Knight knight = new Knight(piece_movable.position, true);
+                                whitePieces.add(knight);
+                                pieces.add(knight);
+                                break;
+                            case 1:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_bishop);
+                                Bishop bishop = new Bishop(piece_movable.position, true);
+                                whitePieces.add(bishop);
+                                pieces.add(bishop);
+                                break;
+                            case 2:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_rook);
+                                Rook rook = new Rook(piece_movable.position, true);
+                                whitePieces.add(rook);
+                                pieces.add(rook);
+                                break;
+                            case 3:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_queen);
+                                Queen queen = new Queen(piece_movable.position, true);
+                                whitePieces.add(queen);
+                                pieces.add(queen);
+                                break;
+                        }
+                        whitePieces.remove(piece_movable);
+                        pieces.remove(piece_movable);
+                    }
+                    else if(piece_movable.getPosition().second == 0 && piece_movable.getPicture() == R.drawable.b_pawn)
+                    {
+                        Random random = new Random();
+                        switch (random.nextInt(4))
+                        {
+                            case 0:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_knight);
+                                Knight knight = new Knight(piece_movable.position, false);
+                                blackPieces.add(knight);
+                                pieces.add(knight);
+                                break;
+                            case 1:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_bishop);
+                                Bishop bishop = new Bishop(piece_movable.position, false);
+                                blackPieces.add(bishop);
+                                pieces.add(bishop);
+                                break;
+                            case 2:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_rook);
+                                Rook rook = new Rook(piece_movable.position, false);
+                                blackPieces.add(rook);
+                                pieces.add(rook);
+                                break;
+                            case 3:
+                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_queen);
+                                Queen queen = new Queen(piece_movable.position, false);
+                                blackPieces.add(queen);
+                                pieces.add(queen);
+                                break;
+                        }
+                        blackPieces.remove(piece_movable);
+                        pieces.remove(piece_movable);
+                    }
+                    else
+                        board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
                     board[piece_movable.getPosition().first][piece_movable.getPosition().second].getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                 }
             });
@@ -368,7 +438,7 @@ public class SimulationActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             int licznik = 0;
 //            while(!isMate(whiteTurn,lastlyMovedPiece,whitePieces,blackPieces))
-            while(licznik < 50) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
+            while(!endGame) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
                 makeMove(whiteTurn);
                 whiteTurn = !whiteTurn;
