@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public abstract class Piece {
 
-    protected Pair<Integer, Integer> position;
+    public Pair<Integer, Integer> position;
     protected boolean color;
     protected ArrayList<Pair<Integer, Integer>> movesList;
 
@@ -66,12 +66,15 @@ public abstract class Piece {
         return null;
     }
 
-    protected boolean isCheck(ArrayList<Piece> pieces, Piece kingPosition)
+    public boolean isCheck(ArrayList<Piece> pieces, Piece king)
     {
         for (Piece piece : pieces) {
             if(piece.color != color)
-                if (isAttacking(piece, kingPosition.position))
+                if (piece.isAttacking(piece, king.position))
+                {
+                    piece.isAttacking(piece, king.position);
                     return true;
+                }
         }
         return false;
     }
@@ -96,7 +99,7 @@ public abstract class Piece {
      * @param black lista czarnych bierek
      * @return czy pole jest dostępne
      */
-    protected boolean IsNotOccupied (int column, int row, ArrayList<Piece> white, ArrayList<Piece> black) {
+    protected boolean isNotOccupied(int column, int row, ArrayList<Piece> white, ArrayList<Piece> black) {
         Pair<Integer, Integer> pair = new Pair<>(column, row);
         for(Piece piece : (color ? white : black))
             if(piece.getPosition().equals(pair))

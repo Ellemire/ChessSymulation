@@ -358,6 +358,7 @@ public class SimulationActivity extends AppCompatActivity {
         }
         return false;
     }
+
     /**
      * klasa odpowiedzialna za symulowanie gry w szachy
      */
@@ -369,7 +370,6 @@ public class SimulationActivity extends AppCompatActivity {
 //            while(!isMate(whiteTurn,lastlyMovedPiece,whitePieces,blackPieces))
             while(licznik < 50) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
-                boolean check = isCheck(whiteTurn);
                 makeMove(whiteTurn);
                 whiteTurn = !whiteTurn;
                 try {

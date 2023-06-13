@@ -38,17 +38,17 @@ public class Pawn extends Piece {
 
         attackColumnLeft = position.first - 1;
         attackColumnRight = position.first + 1;
-        if (isValidSquare(position.first, forwardRow) && IsNotOccupied(position.first, forwardRow, white, black) && IsNotOccupied(position.first, forwardRow, black, white) && !isCheck(pieces, yourKing)){
+        if (isValidSquare(position.first, forwardRow) && isNotOccupied(position.first, forwardRow, white, black) && isNotOccupied(position.first, forwardRow, black, white) && !isCheck(pieces, yourKing)){
             possibleMoves.add(new Pair<>(position.first, forwardRow));
         }
-        if (isValidSquare(position.first, doubleForwardRow) && IsNotOccupied(position.first, doubleForwardRow, white, black) && IsNotOccupied(position.first, doubleForwardRow, black, white) && !isCheck(pieces, yourKing)) {
+        if (isValidSquare(position.first, doubleForwardRow) && isNotOccupied(position.first, doubleForwardRow, white, black) && isNotOccupied(position.first, doubleForwardRow, black, white) && isNotOccupied(position.first, forwardRow, white, black) && isNotOccupied(position.first, forwardRow, black, white) && !isCheck(pieces, yourKing)) {
             possibleMoves.add(new Pair<>(position.first, doubleForwardRow));
         }
-        if (isValidSquare(attackColumnLeft, forwardRow) && !IsNotOccupied(attackColumnLeft, forwardRow,black,white) && !isCheck(pieces, yourKing)) {
+        if (isValidSquare(attackColumnLeft, forwardRow) && !isNotOccupied(attackColumnLeft, forwardRow,black,white) && !isCheck(pieces, yourKing)) {
             possibleMoves.add(new Pair<>(attackColumnLeft, forwardRow));
         }
 
-        if (isValidSquare(attackColumnRight, forwardRow) && !IsNotOccupied(attackColumnRight, forwardRow,black,white) && !isCheck(pieces, yourKing)) {
+        if (isValidSquare(attackColumnRight, forwardRow) && !isNotOccupied(attackColumnRight, forwardRow,black,white) && !isCheck(pieces, yourKing)) {
             possibleMoves.add(new Pair<>(attackColumnRight, forwardRow));
         }
         movesList = possibleMoves;

@@ -24,7 +24,7 @@ public class Knight extends Piece {
         for (int[] move : MOVES) {
             int newColumn = position.first + move[0];
             int newRow = position.second + move[1];
-            if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow, white, black) && !isCheck(pieces, yourKing))
+            if (isValidSquare(newColumn, newRow) && isNotOccupied(newColumn, newRow, white, black) && !isCheck(pieces, yourKing))
                 possibleMoves.add(new Pair<>(newColumn, newRow));
         }
         movesList = possibleMoves;

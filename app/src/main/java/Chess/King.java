@@ -13,6 +13,7 @@ public class King extends Piece {
     public King(Pair<Integer, Integer> position, boolean color, boolean wasMoved) {
         super(position, color);
         this.wasMoved = wasMoved;
+        this.position = position;
     }
 
     //gettery i settery
@@ -35,7 +36,7 @@ public class King extends Piece {
             int newColumn = position.first + move[0];
             int newRow = position.second + move[1];
 
-            if (isValidSquare(newColumn, newRow) && IsNotOccupied(newColumn, newRow, white, black)) {
+            if (isValidSquare(newColumn, newRow) && isNotOccupied(newColumn, newRow, white, black)) {
                 possibleMoves.add(new Pair<>(newColumn, newRow));
             }
         }

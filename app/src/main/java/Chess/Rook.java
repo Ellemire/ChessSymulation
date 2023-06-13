@@ -29,24 +29,45 @@ public class Rook extends Piece {
         pieces.addAll(black);
 
         // Ruchy wzdłuż kolumn
-        for (int row = 0; row < 8; row++) {
-            if (!IsNotOccupied(position.first, row, white, black))
+        for (int row = position.second - 1; row >= 0; row--) {
+            if (!isNotOccupied(position.first, row, white, black))
                 break;
-
-            if (row != position.second && IsNotOccupied(position.first, row, white, black) && !isCheck(pieces, yourKing)) {
+            if (!isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(position.first, row));
+                if(!isNotOccupied(position.first, row, black, white))
+                    break;
+            }
+        }
+        for (int row = position.second + 1; row < 8; row++) {
+            if (!isNotOccupied(position.first, row, white, black))
+                break;
+            if (!isCheck(pieces, yourKing)) {
+                possibleMoves.add(new Pair<>(position.first, row));
+                if(!isNotOccupied(position.first, row, black, white))
+                    break;
             }
         }
 
         // Ruchy wzdłuż wierszy
-        for (int column = 0; column < 8; column++) {
-            if(!IsNotOccupied(column, position.second, white, black))
+        for (int column = position.first + 1; column < 8; column++) {
+            if(!isNotOccupied(column, position.second, white, black))
                 break;
-
-            if (column != position.first && IsNotOccupied(column, position.second, white, black) && !isCheck(pieces, yourKing)) {
+            if (!isCheck(pieces, yourKing)) {
                 possibleMoves.add(new Pair<>(column, position.second));
+                if(!isNotOccupied(column, position.second, black, white))
+                    break;
             }
         }
+        for (int column = position.first - 1; column >= 0; column--) {
+            if(!isNotOccupied(column, position.second, white, black))
+                break;
+            if (!isCheck(pieces, yourKing)) {
+                possibleMoves.add(new Pair<>(column, position.second));
+                if(!isNotOccupied(column, position.second, black, white))
+                    break;
+            }
+        }
+
         movesList = possibleMoves;
         return possibleMoves;
     }

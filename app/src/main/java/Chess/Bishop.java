@@ -21,52 +21,52 @@ public class Bishop extends Piece {
         // Ruchy na prawo-górę
         for(int column = position.first + 1; column < 8; column++)
         {
-            for(int row = position.second + 1; row < 8; row++ )
-            {
-                if (!IsNotOccupied(column, row, white, black))
+            int row = position.second + column - position.first;
+            if (!isNotOccupied(column, row, white, black) || row > 7)
+                break;
+            if (isNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                possibleMoves.add(new Pair<>(column, row));
+                if(!isNotOccupied(column, row, black, white))
                     break;
-                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-                    possibleMoves.add(new Pair<>(column, row));
-                }
             }
         }
 
         // Ruchy na lewo-górę
         for(int column = position.first - 1; column >= 0; column--)
         {
-            for(int row = position.second + 1; row < 8; row++ )
-            {
-                if (!IsNotOccupied(column, row, white, black))
+            int row = position.second + position.first - column;
+            if (!isNotOccupied(column, row, white, black) || row > 7)
+                break;
+            if (isNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                possibleMoves.add(new Pair<>(column, row));
+                if(!isNotOccupied(column, row, black, white))
                     break;
-                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-                    possibleMoves.add(new Pair<>(column, row));
-                }
             }
         }
 
         // Ruchy na prawo-dół
         for(int column = position.first + 1; column < 8; column++)
         {
-            for(int row = position.second - 1; row >= 0; row--)
-            {
-                if (!IsNotOccupied(column, row, white, black))
+            int row = position.second - (column - position.first);
+            if (!isNotOccupied(column, row, white, black) || row < 0)
+                break;
+            if (isNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                possibleMoves.add(new Pair<>(column, row));
+                if(!isNotOccupied(column, row, black, white))
                     break;
-                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-                    possibleMoves.add(new Pair<>(column, row));
-                }
             }
         }
 
         // Ruchy na lewo-dół
         for(int column = position.first - 1; column >= 0; column--)
         {
-            for(int row = position.second - 1; row >= 0; row--)
-            {
-                if (!IsNotOccupied(column, row, white, black))
+            int row = position.second - (position.first - column);
+            if (!isNotOccupied(column, row, white, black) || row < 0)
+                break;
+            if (isNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
+                possibleMoves.add(new Pair<>(column, row));
+                if(!isNotOccupied(column, row, black, white))
                     break;
-                if (IsNotOccupied(column, row, white, black) && !isCheck(pieces, yourKing)) {
-                    possibleMoves.add(new Pair<>(column, row));
-                }
             }
         }
 
