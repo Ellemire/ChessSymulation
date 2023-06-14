@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,13 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
     private Context context;
     private Activity activity;
     private ArrayList<GameRecord> games;
+    private  final GamesInterface gamesInterface;
 
-    public GamesAdapter(Context context, Activity activity, ArrayList<GameRecord> games) {
+    public GamesAdapter(Context context, Activity activity, ArrayList<GameRecord> games, GamesInterface gamesInterface) {
         this.context = context;
         this.activity = activity;
         this.games = games;
+        this.gamesInterface = gamesInterface;
     }
 
     @NonNull
@@ -37,7 +40,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull GamesAdapter.MyViewHolder holder, int position) {
         holder.txt_id.setText(String.valueOf(position + 1));
-        holder.txt_numberOfMoves.setText(games.get(position).getNumberOfMoves());
+        holder.txt_numberOfMoves.setText(String.valueOf(games.get(position).getNumberOfMoves()));
+        holder.txt_time.setText(games.get(position).getTime());
     }
 
     @Override
@@ -47,12 +51,33 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_id, txt_numberOfMoves;
+        TextView txt_id, txt_numberOfMoves, txt_time;
+        ImageButton ibtn_delete;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_id = itemView.findViewById(R.id.txt_id);
             txt_numberOfMoves = itemView.findViewById(R.id.txt_numberOfMoves);
+            txt_time = itemView.findViewById(R.id.txt_time);
+            ibtn_delete = itemView.findViewById(R.id.ibtn_delete);
+
+            ibtn_delete.setOnClickListener(v -> {
+                if(gamesInterface != null)
+                {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION)
+                        gamesInterface.onBtnDeleteClick(position);
+                }
+            });
+
+            itemView.setOnClickListener(v -> {
+                if(gamesInterface != null)
+                {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION)
+                        gamesInterface.onItemClick(position);
+                }
+            });
         }
     }
 }

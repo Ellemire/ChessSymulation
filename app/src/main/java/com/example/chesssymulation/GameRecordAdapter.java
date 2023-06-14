@@ -35,13 +35,13 @@ public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.My
     @Override
     public void onBindViewHolder(@NonNull GameRecordAdapter.MyViewHolder holder, int position) {
         holder.txt_id.setText(String.valueOf(position + 1));
-        holder.txt_whiteMove.setText(moves.get(position / 2));
-        holder.txt_blackMove.setText(moves.get(position / 2 + 1));
+        holder.txt_whiteMove.setText(moves.get(2 * position));
+        holder.txt_blackMove.setText(moves.get(2 * position + 1));
     }
 
     @Override
     public int getItemCount() {
-        return moves.size();
+        return moves.size() / 2;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

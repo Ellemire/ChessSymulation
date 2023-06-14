@@ -1,6 +1,8 @@
 package Chess;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class GameRecord implements Serializable {
@@ -11,7 +13,7 @@ public class GameRecord implements Serializable {
     public GameRecord(String time, ArrayList<String> moves) {
         this.time = time;
         this.moves = moves;
-        numberOfMoves = moves.size();
+        numberOfMoves = moves.size() / 2;
     }
 
     public String getTime() {

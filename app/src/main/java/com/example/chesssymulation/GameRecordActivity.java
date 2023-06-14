@@ -13,6 +13,7 @@ public class GameRecordActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<String> moves;
     GameRecordAdapter gameRecordAdapter;
+    DatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,9 @@ public class GameRecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_record);
 
         recyclerView = findViewById(R.id.rv_gameRecord);
+
+        myDB = new DatabaseHelper(this);
+
         moves = (ArrayList<String>) getIntent().getSerializableExtra("moves");
 
         gameRecordAdapter = new GameRecordAdapter(this, this, moves);

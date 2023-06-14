@@ -3,15 +3,22 @@ package com.example.chesssymulation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +50,8 @@ public class SimulationActivity extends AppCompatActivity {
 
     ArrayList<Piece> whitePieces, blackPieces;
     ArrayList<String> gameRecord;
+    DatabaseHelper myDB;
+    Button btn_gameRecords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +143,14 @@ public class SimulationActivity extends AppCompatActivity {
         whitePieces = new ArrayList<>();
         blackPieces = new ArrayList<>();
         gameRecord = new ArrayList<>();
+        myDB = new DatabaseHelper(this);
+
+        btn_gameRecords = findViewById(R.id.btn_gameRecords);
+        btn_gameRecords.setOnClickListener(v -> {
+            Intent intent = new Intent(SimulationActivity.this, GamesActivity.class);
+            intent.putExtra("moves", gameRecord);
+            startActivity(intent);
+        });
 
         //dodawanie figur do tablicy
         for (ArrayList<ImageButton> row : board_prepare) {
@@ -212,7 +229,20 @@ public class SimulationActivity extends AppCompatActivity {
                 }
             }
         }
+        //ustawianie kolorów pól
+        for(int i = 0; i < 8; i++)
+            for(int j = 0; j < 8; j++)
+            {
+                if((i + j) % 2 == 0)
+                    board[i][j].setBackgroundColor(getResources().getColor(R.color.chess_black));
+                    //board[i][j].getBackground().setTint(getResources().getColor(R.color.chess_black));
+                else
+                    board[i][j].setBackgroundColor(getResources().getColor(R.color.chess_white));
+                    //board[i][j].getBackground().setTint(getResources().getColor(R.color.chess_white));
+            }
+        btn_gameRecords.setVisibility(View.INVISIBLE);
         whiteTurn = true;
+        endGame = false;
         new Simulation().execute();
     }
 
@@ -220,7 +250,7 @@ public class SimulationActivity extends AppCompatActivity {
     Pair<Integer,Integer> clicked = null;
     Pair<Integer,Integer> lastly_moved_square = null;
     Piece lastlyMovedPiece = null;
-    boolean endGame = false;
+    boolean endGame;
 
     /** metoda przesuwająca bierki na planszy
      * @param piece_movable bierka która ma zostać przesunięta
@@ -243,19 +273,19 @@ public class SimulationActivity extends AppCompatActivity {
                 public void run() {
                     if(clicked != null){
                         if((clicked.first + clicked.second) % 2 == 0)
-                            board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_black));
+                            board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_black));
                         else
-                            board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_white));
+                            board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_white));
                     }
                     if(lastly_moved_square != null){
                         if((lastly_moved_square.first + lastly_moved_square.second) % 2 == 0)
-                            board[lastly_moved_square.first][lastly_moved_square.second].getBackground().setTint(getResources().getColor(R.color.chess_black));
+                            board[lastly_moved_square.first][lastly_moved_square.second].setBackgroundColor(getResources().getColor(R.color.chess_black));
                         else
-                            board[lastly_moved_square.first][lastly_moved_square.second].getBackground().setTint(getResources().getColor(R.color.chess_white));
+                            board[lastly_moved_square.first][lastly_moved_square.second].setBackgroundColor(getResources().getColor(R.color.chess_white));
                     }
                     clicked = piece_movable.getPosition();
                     board[clicked.first][clicked.second].setImageResource(0);
-                    board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_clicked));
+                    board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_clicked));
                     Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
                     String currentMove = "";
                     if(piece_movable instanceof Knight)
@@ -270,7 +300,7 @@ public class SimulationActivity extends AppCompatActivity {
                         currentMove += "K";
                     for(Piece piece : pieces)
                     {
-                        if(piece.getClass().equals(piece_movable.getClass()) && !piece.equals(piece_movable))
+                        if(piece.getClass().equals(piece_movable.getClass()) && !piece.equals(piece_movable) && piece.isColor() == piece_movable.isColor())
                             if(piece.calculatePossibleMoves(whitePieces, blackPieces, find_King(piece.isColor())).contains(move))
                             {
                                 if(!piece.position.first.equals(piece_movable.position.first))
@@ -285,14 +315,17 @@ public class SimulationActivity extends AppCompatActivity {
                         if(piece.getPosition().equals(move))
                         {
                             if(piece.getClass().equals(King.class))
+                            {
                                 endGame = true;
+                                btn_gameRecords.setVisibility(View.VISIBLE);
+                            }
                             if(piece.isColor())
                                 whitePieces.remove(piece);
                             else
                                 blackPieces.remove(piece);
                             pieces.remove(piece);
                             if(piece_movable instanceof Pawn)
-                                currentMove += (char) ((int) move.first + 97);
+                                currentMove += (char) ((int) piece_movable.position.first + 97);
                             currentMove += "x";
                             break;
                         }
@@ -300,7 +333,6 @@ public class SimulationActivity extends AppCompatActivity {
                     piece_movable.setPosition(move);
                     lastly_moved_square = move;
                     currentMove += (char) ((int) move.first + 97) + "" + (move.second + 1);
-                    gameRecord.add(currentMove);
                     if(piece_movable.getPosition().second == 7 && piece_movable.getPicture() == R.drawable.w_pawn)
                     {
                         Random random = new Random();
@@ -312,6 +344,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 knight.setPicture(R.drawable.w_knight);
                                 whitePieces.add(knight);
                                 pieces.add(knight);
+                                currentMove += "=N";
                                 break;
                             case 1:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_bishop);
@@ -319,6 +352,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 bishop.setPicture(R.drawable.w_bishop);
                                 whitePieces.add(bishop);
                                 pieces.add(bishop);
+                                currentMove += "=B";
                                 break;
                             case 2:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_rook);
@@ -326,6 +360,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 rook.setPicture(R.drawable.w_rook);
                                 whitePieces.add(rook);
                                 pieces.add(rook);
+                                currentMove += "=R";
                                 break;
                             case 3:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_queen);
@@ -333,6 +368,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 queen.setPicture(R.drawable.w_queen);
                                 whitePieces.add(queen);
                                 pieces.add(queen);
+                                currentMove += "=Q";
                                 break;
                         }
                         whitePieces.remove(piece_movable);
@@ -349,6 +385,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 knight.setPicture(R.drawable.b_knight);
                                 blackPieces.add(knight);
                                 pieces.add(knight);
+                                currentMove += "=N";
                                 break;
                             case 1:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_bishop);
@@ -356,6 +393,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 bishop.setPicture(R.drawable.b_bishop);
                                 blackPieces.add(bishop);
                                 pieces.add(bishop);
+                                currentMove += "=B";
                                 break;
                             case 2:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_rook);
@@ -363,6 +401,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 rook.setPicture(R.drawable.b_rook);
                                 blackPieces.add(rook);
                                 pieces.add(rook);
+                                currentMove += "=R";
                                 break;
                             case 3:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_queen);
@@ -370,6 +409,7 @@ public class SimulationActivity extends AppCompatActivity {
                                 queen.setPicture(R.drawable.b_queen);
                                 blackPieces.add(queen);
                                 pieces.add(queen);
+                                currentMove += "=Q";
                                 break;
                         }
                         blackPieces.remove(piece_movable);
@@ -377,7 +417,8 @@ public class SimulationActivity extends AppCompatActivity {
                     }
                     else
                         board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
-                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].getBackground().setTint(getResources().getColor(R.color.chess_clicked));
+                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setBackgroundColor(getResources().getColor(R.color.chess_clicked));
+                    gameRecord.add(currentMove);
                 }
             });
         }
@@ -475,10 +516,12 @@ public class SimulationActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            int licznik = 0;
 //            while(!isMate(whiteTurn,lastlyMovedPiece,whitePieces,blackPieces))
+            back = false;
             while(!endGame) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
+                if(back)
+                    return null;
                 makeMove(whiteTurn);
                 whiteTurn = !whiteTurn;
                 try {
@@ -486,12 +529,27 @@ public class SimulationActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                licznik++;
             }
-            Intent intent = new Intent(SimulationActivity.this, GameRecordActivity.class);
-            intent.putExtra("moves", gameRecord);
-            startActivity(intent);
+            if(!whiteTurn)
+                gameRecord.add("1:0");
+            else
+            {
+                gameRecord.add("0:1");
+                gameRecord.add(" ");
+            }
+            try {
+                myDB.addRecord(gameRecord.size(), gameRecord, DateTimeFormatter.ofPattern("dd/MM/yyyy\nHH:mm:ss").format(LocalDateTime.now()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return null;
         }
+    }
+
+    boolean back;
+    @Override
+    public void onBackPressed() {
+        back = true;
+        super.onBackPressed();
     }
 }

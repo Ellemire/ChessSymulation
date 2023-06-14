@@ -136,7 +136,7 @@ public class PrepareActivity extends AppCompatActivity {
         palette = new ArrayList<>(Arrays.asList(btn_wKing, btn_wQ, btn_wR, btn_wB, btn_wK, btn_wP,
                 btn_bKing, btn_bQ, btn_bR, btn_bB, btn_bK, btn_bP));
 
-        //on click dla szchownicy
+        //on click dla szachownicy
         clicked = null;
         board = new ArrayList<ArrayList<ImageButton>>();
         for(ImageButton[] row : buttons)
@@ -165,8 +165,7 @@ public class PrepareActivity extends AppCompatActivity {
         btn_startSymulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(clicked != null)
-                    changeColorBack();
+                changeColorBack();
                 if (isbKing && iswKing) {
                     Intent intent = new Intent(PrepareActivity.this, SimulationActivity.class);
                     //intent.putExtra("board", board);
@@ -327,6 +326,8 @@ public class PrepareActivity extends AppCompatActivity {
     //funkcja do powrotu koloru po kliknięciu innego przycisku
     private void changeColorBack()
     {
+        if(clicked == null)
+            return;
         int x = 0, y = 0;
         for(ArrayList<ImageButton> row : board)
         {
@@ -350,5 +351,12 @@ public class PrepareActivity extends AppCompatActivity {
     public void onBackPressed() {
         changeColorBack();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        clicked = null;
+        linearLayout.setVisibility(View.GONE);
+        super.onResume();
     }
 }
