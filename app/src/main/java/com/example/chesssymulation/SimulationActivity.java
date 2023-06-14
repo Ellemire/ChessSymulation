@@ -2,6 +2,7 @@ package com.example.chesssymulation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Pair;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +42,7 @@ public class SimulationActivity extends AppCompatActivity {
     ImageView img_H1, img_H2, img_H3, img_H4, img_H5, img_H6, img_H7, img_H8;
 
     ArrayList<Piece> whitePieces, blackPieces;
+    ArrayList<String> gameRecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +133,7 @@ public class SimulationActivity extends AppCompatActivity {
 
         whitePieces = new ArrayList<>();
         blackPieces = new ArrayList<>();
+        gameRecord = new ArrayList<>();
 
         //dodawanie figur do tablicy
         for (ArrayList<ImageButton> row : board_prepare) {
@@ -253,6 +257,28 @@ public class SimulationActivity extends AppCompatActivity {
                     board[clicked.first][clicked.second].setImageResource(0);
                     board[clicked.first][clicked.second].getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                     Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
+                    String currentMove = "";
+                    if(piece_movable instanceof Knight)
+                        currentMove += "N";
+                    else if(piece_movable instanceof Bishop)
+                        currentMove += "B";
+                    else if(piece_movable instanceof Rook)
+                        currentMove += "R";
+                    else if(piece_movable instanceof Queen)
+                        currentMove += "Q";
+                    else if(piece_movable instanceof King)
+                        currentMove += "K";
+                    for(Piece piece : pieces)
+                    {
+                        if(piece.getClass().equals(piece_movable.getClass()) && !piece.equals(piece_movable))
+                            if(piece.calculatePossibleMoves(whitePieces, blackPieces, find_King(piece.isColor())).contains(move))
+                            {
+                                if(!piece.position.first.equals(piece_movable.position.first))
+                                    currentMove += (char) ((int) piece_movable.position.first + 97);
+                                if(!piece.position.second.equals(piece_movable.position.second))
+                                    currentMove += (piece_movable.position.second + 1);
+                            }
+                    }
                     for(Piece piece : pieces)
                     {
                         //usuwa zbijaną figurę
@@ -265,11 +291,16 @@ public class SimulationActivity extends AppCompatActivity {
                             else
                                 blackPieces.remove(piece);
                             pieces.remove(piece);
+                            if(piece_movable instanceof Pawn)
+                                currentMove += (char) ((int) move.first + 97);
+                            currentMove += "x";
                             break;
                         }
                     }
                     piece_movable.setPosition(move);
                     lastly_moved_square = move;
+                    currentMove += (char) ((int) move.first + 97) + "" + (move.second + 1);
+                    gameRecord.add(currentMove);
                     if(piece_movable.getPosition().second == 7 && piece_movable.getPicture() == R.drawable.w_pawn)
                     {
                         Random random = new Random();
@@ -278,24 +309,28 @@ public class SimulationActivity extends AppCompatActivity {
                             case 0:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_knight);
                                 Knight knight = new Knight(piece_movable.position, true);
+                                knight.setPicture(R.drawable.w_knight);
                                 whitePieces.add(knight);
                                 pieces.add(knight);
                                 break;
                             case 1:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_bishop);
                                 Bishop bishop = new Bishop(piece_movable.position, true);
+                                bishop.setPicture(R.drawable.w_bishop);
                                 whitePieces.add(bishop);
                                 pieces.add(bishop);
                                 break;
                             case 2:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_rook);
                                 Rook rook = new Rook(piece_movable.position, true);
+                                rook.setPicture(R.drawable.w_rook);
                                 whitePieces.add(rook);
                                 pieces.add(rook);
                                 break;
                             case 3:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_queen);
                                 Queen queen = new Queen(piece_movable.position, true);
+                                queen.setPicture(R.drawable.w_queen);
                                 whitePieces.add(queen);
                                 pieces.add(queen);
                                 break;
@@ -311,24 +346,28 @@ public class SimulationActivity extends AppCompatActivity {
                             case 0:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_knight);
                                 Knight knight = new Knight(piece_movable.position, false);
+                                knight.setPicture(R.drawable.b_knight);
                                 blackPieces.add(knight);
                                 pieces.add(knight);
                                 break;
                             case 1:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_bishop);
                                 Bishop bishop = new Bishop(piece_movable.position, false);
+                                bishop.setPicture(R.drawable.b_bishop);
                                 blackPieces.add(bishop);
                                 pieces.add(bishop);
                                 break;
                             case 2:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_rook);
                                 Rook rook = new Rook(piece_movable.position, false);
+                                rook.setPicture(R.drawable.b_rook);
                                 blackPieces.add(rook);
                                 pieces.add(rook);
                                 break;
                             case 3:
                                 board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_queen);
                                 Queen queen = new Queen(piece_movable.position, false);
+                                queen.setPicture(R.drawable.b_queen);
                                 blackPieces.add(queen);
                                 pieces.add(queen);
                                 break;
@@ -449,6 +488,9 @@ public class SimulationActivity extends AppCompatActivity {
                 }
                 licznik++;
             }
+            Intent intent = new Intent(SimulationActivity.this, GameRecordActivity.class);
+            intent.putExtra("moves", gameRecord);
+            startActivity(intent);
             return null;
         }
     }

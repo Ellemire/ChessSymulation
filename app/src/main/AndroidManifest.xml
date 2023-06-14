@@ -13,6 +13,27 @@
         android:theme="@style/Theme.ChessSymulation"
         tools:targetApi="31">
         <activity
+            android:name=".GameRecordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".GamesActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".LastActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SimulationActivity"
             android:exported="false">
             <meta-data
