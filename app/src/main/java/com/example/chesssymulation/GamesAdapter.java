@@ -1,6 +1,5 @@
 package com.example.chesssymulation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +16,12 @@ import Chess.GameRecord;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder> {
 
-    private Context context;
-    private Activity activity;
-    private ArrayList<GameRecord> games;
+    private final Context context;
+    private final ArrayList<GameRecord> games;
     private  final GamesInterface gamesInterface;
 
-    public GamesAdapter(Context context, Activity activity, ArrayList<GameRecord> games, GamesInterface gamesInterface) {
+    public GamesAdapter(Context context, ArrayList<GameRecord> games, GamesInterface gamesInterface) {
         this.context = context;
-        this.activity = activity;
         this.games = games;
         this.gamesInterface = gamesInterface;
     }
@@ -42,6 +39,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
         holder.txt_id.setText(String.valueOf(position + 1));
         holder.txt_numberOfMoves.setText(String.valueOf(games.get(position).getNumberOfMoves()));
         holder.txt_time.setText(games.get(position).getTime());
+        holder.txt_result.setText(games.get(position).getMoves().get(games.get(position).getMoves().size() - 1).equals(" ") ? games.get(position).getMoves().get(games.get(position).getMoves().size() - 2) : games.get(position).getMoves().get(games.get(position).getMoves().size() - 1));
     }
 
     @Override
@@ -51,15 +49,17 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_id, txt_numberOfMoves, txt_time;
-        ImageButton ibtn_delete;
+        TextView txt_id, txt_numberOfMoves, txt_time, txt_result;
+        ImageButton ibtn_delete, ibtn_startingPosition;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_id = itemView.findViewById(R.id.txt_id);
             txt_numberOfMoves = itemView.findViewById(R.id.txt_numberOfMoves);
             txt_time = itemView.findViewById(R.id.txt_time);
+            txt_result = itemView.findViewById(R.id.txt_result);
             ibtn_delete = itemView.findViewById(R.id.ibtn_delete);
+            ibtn_startingPosition = itemView.findViewById(R.id.ibtn_startingPosition);
 
             ibtn_delete.setOnClickListener(v -> {
                 if(gamesInterface != null)
@@ -67,6 +67,15 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION)
                         gamesInterface.onBtnDeleteClick(position);
+                }
+            });
+
+            ibtn_startingPosition.setOnClickListener(v -> {
+                if(gamesInterface != null)
+                {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION)
+                        gamesInterface.onBtnStartingPositionClick(position);
                 }
             });
 

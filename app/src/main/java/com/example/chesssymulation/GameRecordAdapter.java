@@ -14,13 +14,11 @@ import java.util.ArrayList;
 
 public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.MyViewHolder> {
 
-    private Context context;
-    private Activity activity;
-    private ArrayList<String> moves;
+    private final Context context;
+    private final ArrayList<String> moves;
 
-    public GameRecordAdapter(Context context, Activity activity, ArrayList<String> moves) {
+    public GameRecordAdapter(Context context, ArrayList<String> moves) {
         this.context = context;
-        this.activity = activity;
         this.moves = moves;
     }
 
@@ -44,7 +42,7 @@ public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.My
         return moves.size() / 2;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_id, txt_whiteMove, txt_blackMove;
 

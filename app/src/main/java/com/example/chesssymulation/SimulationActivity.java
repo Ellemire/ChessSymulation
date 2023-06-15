@@ -2,9 +2,8 @@ package com.example.chesssymulation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Pair;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -33,6 +31,7 @@ import Chess.Rook;
 /**
  *  klasa odpowiedzialna za ekran symulacji
  */
+@SuppressWarnings("deprecation")
 public class SimulationActivity extends AppCompatActivity {
 
     ArrayList<ArrayList<ImageButton>> board_prepare;
@@ -52,6 +51,7 @@ public class SimulationActivity extends AppCompatActivity {
     ArrayList<String> gameRecord;
     DatabaseHelper myDB;
     Button btn_gameRecords;
+    StringBuilder startingPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,6 @@ public class SimulationActivity extends AppCompatActivity {
                 {img_G1, img_G2, img_G3, img_G4, img_G5, img_G6, img_G7, img_G8},
                 {img_H1, img_H2, img_H3, img_H4, img_H5, img_H6, img_H7, img_H8}};
 
-        board_prepare = (ArrayList<ArrayList<ImageButton>>) getIntent().getSerializableExtra("board");
         if(DataHolder.hasData())
             board_prepare = DataHolder.getData();
         pieces = new ArrayList<>();
@@ -152,10 +151,16 @@ public class SimulationActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        startingPosition = new StringBuilder();
+
         //dodawanie figur do tablicy
-        for (ArrayList<ImageButton> row : board_prepare) {
-            for (ImageButton button : row) {
-                String tag = button.getTag().toString();
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                String tag = board_prepare.get(j).get(i).getTag().toString();
+                ArrayList<ImageButton> row = board_prepare.get(j);
+                ImageButton button = row.get(i);
                 if(tag.length() != 0 && tag.charAt(0) == 'w')
                 {
                     switch (tag) {
@@ -163,31 +168,37 @@ public class SimulationActivity extends AppCompatActivity {
                             pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_pawn);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.w_pawn);
+                            startingPosition.append("wP ");
                             break;
                         case "wKing":
-                            pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true, false));
+                            pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_king);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.w_king);
+                            startingPosition.append("wK ");
                             break;
                         case "wBishop":
                             pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_bishop);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.w_bishop);
+                            startingPosition.append("wB ");
                             break;
                         case "wRook":
                             pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_rook);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.w_rook);
+                            startingPosition.append("wR ");
                             break;
                         case "wKnight":
                             pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_knight);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.w_knight);
+                            startingPosition.append("wN ");
                             break;
                         case "wQueen":
                             pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), true));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.w_queen);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.w_queen);
+                            startingPosition.append("wQ ");
                             break;
                     }
                     whitePieces.add(pieces.get(pieces.size() - 1));
@@ -198,47 +209,55 @@ public class SimulationActivity extends AppCompatActivity {
                             pieces.add(new Pawn(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_pawn);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.b_pawn);
+                            startingPosition.append("bP  ");
                             break;
                         case "bKing":
-                            pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false, false));
+                            pieces.add(new King(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_king);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.b_king);
+                            startingPosition.append("bK  ");
                             break;
                         case "bBishop":
                             pieces.add(new Bishop(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_bishop);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.b_bishop);
+                            startingPosition.append("bB  ");
                             break;
                         case "bRook":
                             pieces.add(new Rook(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_rook);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.b_rook);
+                            startingPosition.append("bR  ");
                             break;
                         case "bKnight":
                             pieces.add(new Knight(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_knight);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.b_knight);
+                            startingPosition.append("bN  ");
                             break;
                         case "bQueen":
                             pieces.add(new Queen(new Pair<>(board_prepare.indexOf(row), row.indexOf(button)), false));
                             board[board_prepare.indexOf(row)][row.indexOf(button)].setImageResource(R.drawable.b_queen);
                             pieces.get(pieces.size() - 1).setPicture(R.drawable.b_queen);
+                            startingPosition.append("bQ ");
                             break;
                     }
                     blackPieces.add(pieces.get(pieces.size() - 1));
                 }
+                else
+                    startingPosition.append("----  ");
             }
+            startingPosition.append("\n");
         }
+
         //ustawianie kolorów pól
         for(int i = 0; i < 8; i++)
             for(int j = 0; j < 8; j++)
             {
                 if((i + j) % 2 == 0)
                     board[i][j].setBackgroundColor(getResources().getColor(R.color.chess_black));
-                    //board[i][j].getBackground().setTint(getResources().getColor(R.color.chess_black));
                 else
                     board[i][j].setBackgroundColor(getResources().getColor(R.color.chess_white));
-                    //board[i][j].getBackground().setTint(getResources().getColor(R.color.chess_white));
             }
         btn_gameRecords.setVisibility(View.INVISIBLE);
         whiteTurn = true;
@@ -256,11 +275,16 @@ public class SimulationActivity extends AppCompatActivity {
      * @param piece_movable bierka która ma zostać przesunięta
      * @return czy pomyślnie przesunięto bierkę
      */
+    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "deprecation"})
     private boolean movePiece(Piece piece_movable) {
         Piece king = find_King(piece_movable.isColor());
-        if(king.getPosition() != null){
+        if(king != null){
             //znajduje dostępne ruchy
-            ArrayList<Pair<Integer, Integer>> moves = piece_movable.calculatePossibleMoves(whitePieces, blackPieces, king);
+            ArrayList<Pair<Integer, Integer>> moves;
+            if(piece_movable instanceof King)
+                moves = piece_movable.calculatePossibleMoves(whitePieces, blackPieces, find_King(!piece_movable.isColor()));
+            else
+                moves = piece_movable.calculatePossibleMoves(whitePieces, blackPieces, king);
             //sprawdza czy istnieją ruchy dla wybranej figury
             if(moves.size() == 0) {
                 return false;
@@ -268,157 +292,159 @@ public class SimulationActivity extends AppCompatActivity {
             lastlyMovedPiece = piece_movable;
             //wybiera ruch który ma zostać wykonany przez wybraną figurę i przesuwa ją
             Random rand = new Random();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(clicked != null){
-                        if((clicked.first + clicked.second) % 2 == 0)
-                            board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_black));
-                        else
-                            board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_white));
-                    }
-                    if(lastly_moved_square != null){
-                        if((lastly_moved_square.first + lastly_moved_square.second) % 2 == 0)
-                            board[lastly_moved_square.first][lastly_moved_square.second].setBackgroundColor(getResources().getColor(R.color.chess_black));
-                        else
-                            board[lastly_moved_square.first][lastly_moved_square.second].setBackgroundColor(getResources().getColor(R.color.chess_white));
-                    }
-                    clicked = piece_movable.getPosition();
-                    board[clicked.first][clicked.second].setImageResource(0);
-                    board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_clicked));
-                    Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
-                    String currentMove = "";
-                    if(piece_movable instanceof Knight)
-                        currentMove += "N";
-                    else if(piece_movable instanceof Bishop)
-                        currentMove += "B";
-                    else if(piece_movable instanceof Rook)
-                        currentMove += "R";
-                    else if(piece_movable instanceof Queen)
-                        currentMove += "Q";
-                    else if(piece_movable instanceof King)
-                        currentMove += "K";
-                    for(Piece piece : pieces)
-                    {
-                        if(piece.getClass().equals(piece_movable.getClass()) && !piece.equals(piece_movable) && piece.isColor() == piece_movable.isColor())
-                            if(piece.calculatePossibleMoves(whitePieces, blackPieces, find_King(piece.isColor())).contains(move))
-                            {
-                                if(!piece.position.first.equals(piece_movable.position.first))
-                                    currentMove += (char) ((int) piece_movable.position.first + 97);
-                                if(!piece.position.second.equals(piece_movable.position.second))
-                                    currentMove += (piece_movable.position.second + 1);
-                            }
-                    }
-                    for(Piece piece : pieces)
-                    {
-                        //usuwa zbijaną figurę
-                        if(piece.getPosition().equals(move))
-                        {
-                            if(piece.getClass().equals(King.class))
-                            {
-                                endGame = true;
-                                btn_gameRecords.setVisibility(View.VISIBLE);
-                            }
-                            if(piece.isColor())
-                                whitePieces.remove(piece);
-                            else
-                                blackPieces.remove(piece);
-                            pieces.remove(piece);
-                            if(piece_movable instanceof Pawn)
-                                currentMove += (char) ((int) piece_movable.position.first + 97);
-                            currentMove += "x";
-                            break;
-                        }
-                    }
-                    piece_movable.setPosition(move);
-                    lastly_moved_square = move;
-                    currentMove += (char) ((int) move.first + 97) + "" + (move.second + 1);
-                    if(piece_movable.getPosition().second == 7 && piece_movable.getPicture() == R.drawable.w_pawn)
-                    {
-                        Random random = new Random();
-                        switch (random.nextInt(4))
-                        {
-                            case 0:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_knight);
-                                Knight knight = new Knight(piece_movable.position, true);
-                                knight.setPicture(R.drawable.w_knight);
-                                whitePieces.add(knight);
-                                pieces.add(knight);
-                                currentMove += "=N";
-                                break;
-                            case 1:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_bishop);
-                                Bishop bishop = new Bishop(piece_movable.position, true);
-                                bishop.setPicture(R.drawable.w_bishop);
-                                whitePieces.add(bishop);
-                                pieces.add(bishop);
-                                currentMove += "=B";
-                                break;
-                            case 2:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_rook);
-                                Rook rook = new Rook(piece_movable.position, true);
-                                rook.setPicture(R.drawable.w_rook);
-                                whitePieces.add(rook);
-                                pieces.add(rook);
-                                currentMove += "=R";
-                                break;
-                            case 3:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_queen);
-                                Queen queen = new Queen(piece_movable.position, true);
-                                queen.setPicture(R.drawable.w_queen);
-                                whitePieces.add(queen);
-                                pieces.add(queen);
-                                currentMove += "=Q";
-                                break;
-                        }
-                        whitePieces.remove(piece_movable);
-                        pieces.remove(piece_movable);
-                    }
-                    else if(piece_movable.getPosition().second == 0 && piece_movable.getPicture() == R.drawable.b_pawn)
-                    {
-                        Random random = new Random();
-                        switch (random.nextInt(4))
-                        {
-                            case 0:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_knight);
-                                Knight knight = new Knight(piece_movable.position, false);
-                                knight.setPicture(R.drawable.b_knight);
-                                blackPieces.add(knight);
-                                pieces.add(knight);
-                                currentMove += "=N";
-                                break;
-                            case 1:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_bishop);
-                                Bishop bishop = new Bishop(piece_movable.position, false);
-                                bishop.setPicture(R.drawable.b_bishop);
-                                blackPieces.add(bishop);
-                                pieces.add(bishop);
-                                currentMove += "=B";
-                                break;
-                            case 2:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_rook);
-                                Rook rook = new Rook(piece_movable.position, false);
-                                rook.setPicture(R.drawable.b_rook);
-                                blackPieces.add(rook);
-                                pieces.add(rook);
-                                currentMove += "=R";
-                                break;
-                            case 3:
-                                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_queen);
-                                Queen queen = new Queen(piece_movable.position, false);
-                                queen.setPicture(R.drawable.b_queen);
-                                blackPieces.add(queen);
-                                pieces.add(queen);
-                                currentMove += "=Q";
-                                break;
-                        }
-                        blackPieces.remove(piece_movable);
-                        pieces.remove(piece_movable);
-                    }
+            runOnUiThread(() -> {
+                if(clicked != null){
+                    if((clicked.first + clicked.second) % 2 == 0)
+                        board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_black));
                     else
-                        board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
-                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setBackgroundColor(getResources().getColor(R.color.chess_clicked));
-                    gameRecord.add(currentMove);
+                        board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_white));
+                }
+                if(lastly_moved_square != null){
+                    if((lastly_moved_square.first + lastly_moved_square.second) % 2 == 0)
+                        board[lastly_moved_square.first][lastly_moved_square.second].setBackgroundColor(getResources().getColor(R.color.chess_black));
+                    else
+                        board[lastly_moved_square.first][lastly_moved_square.second].setBackgroundColor(getResources().getColor(R.color.chess_white));
+                }
+                clicked = piece_movable.getPosition();
+                board[clicked.first][clicked.second].setImageResource(0);
+                board[clicked.first][clicked.second].setBackgroundColor(getResources().getColor(R.color.chess_clicked));
+                Pair<Integer, Integer> move = moves.get(rand.nextInt(moves.size()));
+                StringBuilder currentMove = new StringBuilder();
+                if(piece_movable instanceof Knight)
+                    currentMove.append("N");
+                else if(piece_movable instanceof Bishop)
+                    currentMove.append("B");
+                else if(piece_movable instanceof Rook)
+                    currentMove.append("R");
+                else if(piece_movable instanceof Queen)
+                    currentMove.append("Q");
+                else if(piece_movable instanceof King)
+                    currentMove.append("K");
+                for(Piece piece : pieces)
+                {
+                    if(piece.getClass().equals(piece_movable.getClass()) && !piece.equals(piece_movable) && piece.isColor() == piece_movable.isColor())
+                        if(piece.calculatePossibleMoves(whitePieces, blackPieces, find_King(piece.isColor())).contains(move))
+                        {
+                            if(!piece.position.first.equals(piece_movable.position.first))
+                                currentMove.append((char) ((int) piece_movable.position.first + 97));
+                            if(!piece.position.second.equals(piece_movable.position.second))
+                                currentMove.append(piece_movable.position.second + 1);
+                        }
+                }
+                for(Piece piece : pieces)
+                {
+                    //usuwa zbijaną figurę
+                    if(piece.getPosition().equals(move))
+                    {
+                        if(piece.getClass().equals(King.class))
+                        {
+                            endGame = true;
+                            btn_gameRecords.setVisibility(View.VISIBLE);
+                        }
+                        if(piece.isColor())
+                            whitePieces.remove(piece);
+                        else
+                            blackPieces.remove(piece);
+                        pieces.remove(piece);
+                        if(piece_movable instanceof Pawn)
+                            currentMove.append((char) ((int) piece_movable.position.first + 97));
+                        currentMove.append("x");
+                        break;
+                    }
+                }
+                piece_movable.setPosition(move);
+                lastly_moved_square = move;
+                currentMove.append((char) ((int) move.first + 97)).append(move.second + 1);
+                if(piece_movable.getPosition().second == 7 && piece_movable.getPicture() == R.drawable.w_pawn)
+                {
+                    Random random = new Random();
+                    switch (random.nextInt(4))
+                    {
+                        case 0:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_knight);
+                            Knight knight = new Knight(piece_movable.position, true);
+                            knight.setPicture(R.drawable.w_knight);
+                            whitePieces.add(knight);
+                            pieces.add(knight);
+                            currentMove.append("=N");
+                            break;
+                        case 1:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_bishop);
+                            Bishop bishop = new Bishop(piece_movable.position, true);
+                            bishop.setPicture(R.drawable.w_bishop);
+                            whitePieces.add(bishop);
+                            pieces.add(bishop);
+                            currentMove.append("=B");
+                            break;
+                        case 2:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_rook);
+                            Rook rook = new Rook(piece_movable.position, true);
+                            rook.setPicture(R.drawable.w_rook);
+                            whitePieces.add(rook);
+                            pieces.add(rook);
+                            currentMove.append("=R");
+                            break;
+                        case 3:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_queen);
+                            Queen queen = new Queen(piece_movable.position, true);
+                            queen.setPicture(R.drawable.w_queen);
+                            whitePieces.add(queen);
+                            pieces.add(queen);
+                            currentMove.append("=Q");
+                            break;
+                    }
+                    whitePieces.remove(piece_movable);
+                    pieces.remove(piece_movable);
+                }
+                else if(piece_movable.getPosition().second == 0 && piece_movable.getPicture() == R.drawable.b_pawn)
+                {
+                    Random random = new Random();
+                    switch (random.nextInt(4))
+                    {
+                        case 0:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_knight);
+                            Knight knight = new Knight(piece_movable.position, false);
+                            knight.setPicture(R.drawable.b_knight);
+                            blackPieces.add(knight);
+                            pieces.add(knight);
+                            currentMove.append("=N");
+                            break;
+                        case 1:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_bishop);
+                            Bishop bishop = new Bishop(piece_movable.position, false);
+                            bishop.setPicture(R.drawable.b_bishop);
+                            blackPieces.add(bishop);
+                            pieces.add(bishop);
+                            currentMove.append("=B");
+                            break;
+                        case 2:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_rook);
+                            Rook rook = new Rook(piece_movable.position, false);
+                            rook.setPicture(R.drawable.b_rook);
+                            blackPieces.add(rook);
+                            pieces.add(rook);
+                            currentMove.append("=R");
+                            break;
+                        case 3:
+                            board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_queen);
+                            Queen queen = new Queen(piece_movable.position, false);
+                            queen.setPicture(R.drawable.b_queen);
+                            blackPieces.add(queen);
+                            pieces.add(queen);
+                            currentMove.append("=Q");
+                            break;
+                    }
+                    blackPieces.remove(piece_movable);
+                    pieces.remove(piece_movable);
+                }
+                else
+                    board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(piece_movable.getPicture());
+                board[piece_movable.getPosition().first][piece_movable.getPosition().second].setBackgroundColor(getResources().getColor(R.color.chess_clicked));
+                gameRecord.add(currentMove.toString());
+                if(pieces.size() == 2)
+                {
+                    endGame = true;
+                    btn_gameRecords.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -428,6 +454,7 @@ public class SimulationActivity extends AppCompatActivity {
     /** losuje bierkę do wykonania ruchu, wywołuje wykonanie ruchu
      * @param whiteTurn kolor bierek które mają się aktualnie ruszyć
      */
+    @SuppressWarnings("StatementWithEmptyBody")
     private void makeMove(Boolean whiteTurn)
     {
         Random rand = new Random();
@@ -452,71 +479,15 @@ public class SimulationActivity extends AppCompatActivity {
         return null;
     }
 
-    /** Metoda sprawdzająca czy jest szach
-     * @param color kolor dla którego sprawdzamy szacha
-     * @return czy król jest szachowany
-     */
-    private boolean isCheck(boolean color){
-        King king = find_King(color);
-        if (color) {
-            for (Piece piece : blackPieces){
-                if(piece.calculatePossibleMoves(whitePieces, blackPieces, king).contains(king.getPosition())){
-                    Toast.makeText(this, "Check!", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-            }
-        }
-        else {
-            for (Piece piece : whitePieces) {
-                if(piece.calculatePossibleMoves(whitePieces, blackPieces, king).contains(king.getPosition())){
-                    Toast.makeText(this, "Check!", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /** metoda sprawdza czy po ruchu przeciwnika nastąpił mat
-     * @param color kolor figur, dla których sprawdzany jest mat
-     * @param lastlyMoved ostatnio ruszona figura przeciwnego koloru
-     * @param white lista białych bierek
-     * @param black lista czarnych bierek
-     * @return czy jest mat
-     */
-    private boolean isMate(boolean color, Piece lastlyMoved, ArrayList<Piece> white, ArrayList<Piece> black)
-    {
-        if (isCheck(color))
-        {
-            if (color)
-            {
-                for (Piece piece : blackPieces)
-                {
-
-                }
-            }
-            else
-            {
-                for (Piece piece : whitePieces)
-                {
-
-                }
-            }
-//            if(lastlyMoved.calculateDefenseMoves(find_King(!color),find_King(color),white,black).isEmpty()){
-            Toast.makeText(this, "Check!", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return false;
-    }
-
     /**
      * klasa odpowiedzialna za symulowanie gry w szachy
      */
+    @SuppressWarnings("deprecation")
+    @SuppressLint("StaticFieldLeak")
     private class Simulation extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
-//            while(!isMate(whiteTurn,lastlyMovedPiece,whitePieces,blackPieces))
             back = false;
             while(!endGame) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
             {
@@ -530,15 +501,16 @@ public class SimulationActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            if(!whiteTurn)
-                gameRecord.add("1:0");
+            if(pieces.size() == 2)
+                gameRecord.add("0.5 : 0.5");
+            else if(!whiteTurn)
+                gameRecord.add("1 : 0");
             else
-            {
-                gameRecord.add("0:1");
+                gameRecord.add("0 : 1");
+            if(gameRecord.size() % 2 != 0)
                 gameRecord.add(" ");
-            }
             try {
-                myDB.addRecord(gameRecord.size(), gameRecord, DateTimeFormatter.ofPattern("dd/MM/yyyy\nHH:mm:ss").format(LocalDateTime.now()));
+                myDB.addRecord(gameRecord, DateTimeFormatter.ofPattern("dd/MM/yyyy\nHH:mm:ss").format(LocalDateTime.now()), startingPosition.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

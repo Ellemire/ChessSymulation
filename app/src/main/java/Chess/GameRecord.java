@@ -1,19 +1,19 @@
 package Chess;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class GameRecord implements Serializable {
     private final String time;
-    private ArrayList<String> moves;
+    private final ArrayList<String> moves;
     private final int numberOfMoves;
+    private final String startingPosition;
 
-    public GameRecord(String time, ArrayList<String> moves) {
+    public GameRecord(String time, ArrayList<String> moves, String startingPosition) {
         this.time = time;
         this.moves = moves;
         numberOfMoves = moves.size() / 2;
+        this.startingPosition = startingPosition;
     }
 
     public String getTime() {
@@ -24,11 +24,11 @@ public class GameRecord implements Serializable {
         return moves;
     }
 
-    public void setMoves(ArrayList<String> moves) {
-        this.moves = moves;
-    }
-
     public int getNumberOfMoves() {
         return numberOfMoves;
+    }
+
+    public String getStartingPosition() {
+        return startingPosition;
     }
 }

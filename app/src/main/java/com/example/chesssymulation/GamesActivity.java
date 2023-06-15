@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import Chess.GameRecord;
 
@@ -41,7 +41,7 @@ public class GamesActivity extends AppCompatActivity implements GamesInterface {
             e.printStackTrace();
         }
 
-        gamesAdapter = new GamesAdapter(this, this, games, this);
+        gamesAdapter = new GamesAdapter(this, games, this);
         recyclerView.setAdapter(gamesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(GamesActivity.this));
     }
@@ -53,11 +53,11 @@ public class GamesActivity extends AppCompatActivity implements GamesInterface {
             JSONObject jsonObject = new JSONObject(cursor.getString(1));
             JSONArray jsonArray = jsonObject.optJSONArray("moves");
             ArrayList<String> moves = new ArrayList<>();
-            for(int i = 0; i < jsonArray.length(); i++)
+            for(int i = 0; i < Objects.requireNonNull(jsonArray).length(); i++)
             {
                 moves.add(jsonArray.get(i).toString());
             }
-            games.add(new GameRecord(cursor.getString(2), moves));
+            games.add(new GameRecord(cursor.getString(2), moves, cursor.getString(3)));
         }
     }
 
@@ -73,19 +73,24 @@ public class GamesActivity extends AppCompatActivity implements GamesInterface {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Usunąć zapis " + (position + 1) + "?");
         builder.setMessage("Czy na pewno usunąć zapis partii nr " + (position + 1) + "?");
-        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                DatabaseHelper myDB = new DatabaseHelper(GamesActivity.this);
-                myDB.deleteRecord(String.valueOf(position + 1));
-                recreate();
-            }
+        builder.setPositiveButton("Tak", (dialog, which) -> {
+            DatabaseHelper myDB = new DatabaseHelper(GamesActivity.this);
+            myDB.deleteRecord(String.valueOf(position + 1));
+            recreate();
         });
-        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setNegativeButton("Nie", (dialog, which) -> {
 
-            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    public void onBtnStartingPositionClick(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pozycja startowa");
+        builder.setMessage(games.get(position).getStartingPosition());
+        builder.setNeutralButton("OK", (dialog, which) -> {
+
         });
         builder.create().show();
     }

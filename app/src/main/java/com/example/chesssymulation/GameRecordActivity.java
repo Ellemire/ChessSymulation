@@ -15,6 +15,7 @@ public class GameRecordActivity extends AppCompatActivity {
     GameRecordAdapter gameRecordAdapter;
     DatabaseHelper myDB;
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,7 @@ public class GameRecordActivity extends AppCompatActivity {
 
         moves = (ArrayList<String>) getIntent().getSerializableExtra("moves");
 
-        gameRecordAdapter = new GameRecordAdapter(this, this, moves);
+        gameRecordAdapter = new GameRecordAdapter(this, moves);
         recyclerView.setAdapter(gameRecordAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

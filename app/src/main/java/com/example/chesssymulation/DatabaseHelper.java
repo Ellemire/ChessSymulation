@@ -16,17 +16,16 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private Context context;
     private static final String DATABASE_NAME = "GameRecords.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME = "games_played";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_MOVES = "moves";
     private static final String COLUMN_TIME = "time";
+    private static final String COLUMN_POSITION = "position";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override
@@ -34,7 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "CREATE TABLE " + TABLE_NAME +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_MOVES + " TEXT, " +
-                COLUMN_TIME + " TEXT);";
+                COLUMN_TIME + " TEXT, " +
+                COLUMN_POSITION + " TEXT);";
         db.execSQL(query);
     }
 
@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void addRecord(int numberOfMoves, ArrayList<String> moves, String time) throws JSONException {
+    public void addRecord(ArrayList<String> moves, String time, String startingPosition) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -65,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_MOVES, jsonArrayList);
         cv.put(COLUMN_TIME, time);
+        cv.put(COLUMN_POSITION, startingPosition);
 
         db.insert(TABLE_NAME, null, cv);
     }

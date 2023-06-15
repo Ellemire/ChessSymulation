@@ -3,6 +3,7 @@ package Chess;
 import android.util.Pair;
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public abstract class Piece {
 
     public Pair<Integer, Integer> position;
@@ -49,12 +50,6 @@ public abstract class Piece {
         this.picture = picture;
     }
 
-    //inne
-
-//    public boolean canStand(Pair<Integer,Integer> square){
-//        if (calculatePossibleMoves())
-//    }
-
     /** Metoda sprawdzająca możliwe do wykonania ruchy dla danej bierki
      * @param white lista białych bierek
      * @param black lista czarnych bierek
@@ -64,23 +59,6 @@ public abstract class Piece {
     public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Piece yourKing)
     {
         return null;
-    }
-
-    public boolean isCheck(ArrayList<Piece> pieces, Piece king)
-    {
-        for (Piece piece : pieces) {
-            if(piece.color != color)
-                if (piece.isAttacking(piece, king.position))
-                {
-                    piece.isAttacking(piece, king.position);
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    protected boolean isAttacking(Piece piece, Pair<Integer, Integer> kingPosition) {
-        return false;
     }
 
     /** metoda sprawdzająca czy istnieje dane pole
