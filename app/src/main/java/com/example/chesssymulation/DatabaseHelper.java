@@ -14,6 +14,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Klasa do obsługi bazy danych
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "GameRecords.db";
@@ -44,6 +47,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /** metoda do czytania bazy danych
+     * @return
+     */
     Cursor readAllData()
     {
         String query = "SELECT * FROM " + TABLE_NAME;
@@ -55,6 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /** metoda do dowania zapisów partii do bazy danych
+     * @param moves wykonane ruchy
+     * @param time czas zakończenia symulacji
+     * @param startingPosition pozycja początkowa
+     * @throws JSONException obsługa wyjątków
+     */
     public void addRecord(ArrayList<String> moves, String time, String startingPosition) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -70,6 +82,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, cv);
     }
 
+    /** metoda do usuwania zapisów z bazy danych
+     * @param row_id indeks usuwanego zapisu w bazie danych
+     */
     public void deleteRecord(String row_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
