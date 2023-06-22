@@ -4,138 +4,113 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 
+/**
+ * Klasa "Hetman" dziedzicząca po klasie "Bierka" (ang. Piece)
+ */
 public class Queen extends Piece {
 
     //konstruktor
+    /** Konstruktor obiektu typu "Hetman".
+     * @param position pozycja bierki zapisana w formie pary obiektów typu Integer
+     * @param color kolor bierki: true - biały, false - czarny
+     */
     public Queen(Pair<Integer, Integer> position, boolean color) {
         super(position, color);
-
-        if(!color)//biały
-            PiecesListWhite.add(position);
-        if(color)//czarny
-            PiecesListBlack.add(position);
     }
 
+    /** Metoda zwracająca możliwe ruchy do wykonania dla hetmana.
+     * Hetman porusza się na skosy albo po prostych.
+     * @param white    lista białych bierek
+     * @param black    lista czarnych bierek
+     * @param yourKing pozycja króla w kolorze danej figury
+     * @return lista dostępnych ruchów
+     */
     @Override
-    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves() {
+    public ArrayList<Pair<Integer, Integer>> calculatePossibleMoves(ArrayList<Piece> white, ArrayList<Piece> black, Piece yourKing) {
         ArrayList<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
-
         // Ruchy w pionie
-        for (int row = 0; row < 8; row++) {
-            Check();
-            if (row != position.second && IsNotOccupied(position.first,row) && !isCheck) {
-                possibleMoves.add(new Pair<>(position.first, row));
-            }
+        for (int row = position.second + 1; row < 8; row++) {
+            if (!isNotOccupied(position.first, row, white, black))
+                break;
+            possibleMoves.add(new Pair<>(position.first, row));
+            if(!isNotOccupied(position.first, row, black, white))
+                break;
+        }
+        for (int row = position.second - 1; row >= 0; row--) {
+            if (!isNotOccupied(position.first, row, white, black))
+                break;
+            possibleMoves.add(new Pair<>(position.first, row));
+            if(!isNotOccupied(position.first, row, black, white))
+                break;
         }
 
         // Ruchy w poziomie
-        for (int column = 0; column < 8; column++) {
-            Check();
-            if (column != position.first && IsNotOccupied(column,position.second) && !isCheck) {
+        for (int column = position.first + 1; column < 8; column++) {
+            if(!isNotOccupied(column, position.second, white, black))
+                break;
+            if (column != position.first) {
                 possibleMoves.add(new Pair<>(column, position.second));
+                if(!isNotOccupied(column, position.second, black, white))
+                    break;
+            }
+        }
+        for (int column = position.first - 1; column >= 0; column--) {
+            if(!isNotOccupied(column, position.second, white, black))
+                break;
+            if (column != position.first) {
+                possibleMoves.add(new Pair<>(column, position.second));
+                if(!isNotOccupied(column, position.second, black, white))
+                    break;
             }
         }
 
         // Ruchy na skosach
-        int column = position.first + 1;
-        int row = position.second + 1;
-        Check();
-        while (column < 8 && row < 8 && IsNotOccupied(column,row) && !isCheck) {
+
+        // Ruchy na prawo-górę
+        for(int column = position.first + 1; column < 8; column++)
+        {
+            int row = position.second + column - position.first;
+            if (!isNotOccupied(column, row, white, black) || row > 7)
+                break;
             possibleMoves.add(new Pair<>(column, row));
-            column++;
-            row++;
-            Check();
+            if(!isNotOccupied(column, row, black, white))
+                break;
         }
 
-        column = position.first - 1;
-        row = position.second + 1;
-        Check();
-        while (column >= 0 && row < 8 && IsNotOccupied(column,row) && !isCheck) {
+        // Ruchy na lewo-górę
+        for(int column = position.first - 1; column >= 0; column--)
+        {
+            int row = position.second + position.first - column;
+            if (!isNotOccupied(column, row, white, black) || row > 7)
+                break;
             possibleMoves.add(new Pair<>(column, row));
-            column--;
-            row++;
-            Check();
+            if(!isNotOccupied(column, row, black, white))
+                break;
         }
 
-        column = position.first + 1;
-        row = position.second - 1;
-        Check();
-        while (column < 8 && row >= 0 && IsNotOccupied(column,row) && !isCheck) {
+        // Ruchy na prawo-dół
+        for(int column = position.first + 1; column < 8; column++)
+        {
+            int row = position.second - (column - position.first);
+            if (!isNotOccupied(column, row, white, black) || row < 0)
+                break;
             possibleMoves.add(new Pair<>(column, row));
-            column++;
-            row--;
-            Check();
+            if(!isNotOccupied(column, row, black, white))
+                break;
         }
 
-        column = position.first - 1;
-        row = position.second - 1;
-        Check();
-        while (column >= 0 && row >= 0 && IsNotOccupied(column,row) && !isCheck) {
+        // Ruchy na lewo-dół
+        for(int column = position.first - 1; column >= 0; column--)
+        {
+            int row = position.second - (position.first - column);
+            if (!isNotOccupied(column, row, white, black) || row < 0)
+                break;
             possibleMoves.add(new Pair<>(column, row));
-            column--;
-            row--;
-            Check();
+            if(!isNotOccupied(column, row, black, white))
+                break;
         }
 
+        movesList = possibleMoves;
         return possibleMoves;
-    }
-
-    private boolean IsNotOccupied (int column, int row) {
-        Pair<Integer, Integer> pair = new Pair<>(column, row);
-        if (!color && PiecesListWhite.contains(pair))
-            return false;
-        if (color && PiecesListBlack.contains(pair))
-            return false;
-        return true;
-    }
-
-    private boolean isCheck(ArrayList<Pair<Integer, Integer>> pieces, Pair<Integer, Integer> kingPosition) {
-        for (Pair<Integer, Integer> piece : pieces) {
-            if (isAttacking(piece, kingPosition)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isAttacking(Pair<Integer, Integer> piece, Pair<Integer, Integer> kingPosition) {
-        int pieceColumn = piece.first;
-        int pieceRow = piece.second;
-        int kingColumn = kingPosition.first;
-        int kingRow = kingPosition.second;
-
-        // Sprawdzamy, czy figura atakuje króla na wprost (pionowo, poziomo lub na skos)
-        if (pieceColumn == kingColumn || pieceRow == kingRow || Math.abs(pieceColumn - kingColumn) == Math.abs(pieceRow - kingRow)) {
-            return true;
-        }
-
-        // Sprawdzamy, czy figura atakuje króla jako skoczek
-        int columnDiff = Math.abs(pieceColumn - kingColumn);
-        int rowDiff = Math.abs(pieceRow - kingRow);
-        if (columnDiff == 2 && rowDiff == 1 || columnDiff == 1 && rowDiff == 2) {
-            return true;
-        }
-
-        // Sprawdzamy, czy figura atakuje króla jako pionek
-        int direction = 1; // Kierunek ataku pionka (1 - w górę, -1 - w dół)
-        if (pieceRow > kingRow) {
-            direction = -1;
-        }
-        if (pieceColumn == kingColumn + 1 || pieceColumn == kingColumn - 1) {
-            if (pieceRow == kingRow + direction) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    boolean isCheck;
-    private void Check(){
-        ArrayList<Pair<Integer, Integer>> pieces = new ArrayList<>();
-        if(color)
-            isCheck= isCheck(PiecesListBlack, kingPosition);
-        if(!color)
-            isCheck= isCheck(PiecesListWhite, kingPosition);
     }
 }

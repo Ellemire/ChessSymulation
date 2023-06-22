@@ -4,19 +4,34 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
+/**
+ * Enum odpowadający za przekzaywanie danych między PrepareActivity a SymulationActivity.
+ */
 public enum DataHolder {
     INSTANCE;
 
+    /**
+     * Lista przekazywanych obiektów.
+     */
     private ArrayList<ArrayList<ImageButton>> mObjectList;
 
+    /** Metoda zwracająca informacje czy DataHolder zawiera dane.
+     * @return czy zawiera dane
+     */
     public static boolean hasData(){
         return INSTANCE.mObjectList != null;
     }
 
+    /** Metoda pozwalająca na przypisanie danych.
+     * @param objectList lista przycisków
+     */
     public static void setData(final ArrayList<ArrayList<ImageButton>> objectList) {
         INSTANCE.mObjectList = objectList;
     }
 
+    /** Metoda zwracająca przypisane dane.
+     * @return lista przycisków odpowiadająca polom na szachownicy
+     */
     public static ArrayList<ArrayList<ImageButton>> getData() {
         final ArrayList<ArrayList<ImageButton>> retList = INSTANCE.mObjectList;
         INSTANCE.mObjectList = null;

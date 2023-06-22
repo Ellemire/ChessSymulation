@@ -4,17 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Activity obsługujące przygotowanie symulacji np. ustawienie bierek na szachownicy.
+ */
 public class PrepareActivity extends AppCompatActivity {
 
     Button btn_startSymulation;
@@ -37,6 +38,10 @@ public class PrepareActivity extends AppCompatActivity {
     Boolean iswKing = true, isbKing = true;
     LinearLayout linearLayout;
 
+    /** Metoda która wywołuje się po przejściu do ekranu, na którym przygotowane jest ustawienie figur przed symulacją.
+     * @param savedInstanceState pakiet danych
+     */
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,25 +143,22 @@ public class PrepareActivity extends AppCompatActivity {
         palette = new ArrayList<>(Arrays.asList(btn_wKing, btn_wQ, btn_wR, btn_wB, btn_wK, btn_wP,
                 btn_bKing, btn_bQ, btn_bR, btn_bB, btn_bK, btn_bP));
 
-        //on click dla szchownicy
+        //on click dla szachownicy
         clicked = null;
-        board = new ArrayList<ArrayList<ImageButton>>();
+        board = new ArrayList<>();
         for(ImageButton[] row : buttons)
         {
             ArrayList<ImageButton> one_row = new ArrayList<>();
             for(ImageButton square : row)
             {
                 one_row.add(square);
-                square.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(clicked != null)
-                            changeColorBack();
-                        else
-                            linearLayout.setVisibility(View.VISIBLE);
-                        clicked = square;
-                        clicked.getBackground().setTint(getResources().getColor(R.color.chess_clicked));
-                    }
+                square.setOnClickListener(v -> {
+                    if(clicked != null)
+                        changeColorBack();
+                    else
+                        linearLayout.setVisibility(View.VISIBLE);
+                    clicked = square;
+                    clicked.getBackground().setTint(getResources().getColor(R.color.chess_clicked));
                 });
                 square.setTag("");
             }
@@ -164,13 +166,15 @@ public class PrepareActivity extends AppCompatActivity {
         }
 
         //rozpoczęcie symulacji
-        btn_startSymulation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PrepareActivity.this, SymulationActivity.class);
-                //intent.putExtra("board", board);
-                DataHolder.setData(board);
+        btn_startSymulation.setOnClickListener(v -> {
+            changeColorBack();
+            if (isbKing && iswKing) {
+                Intent intent = new Intent(PrepareActivity.this, SimulationActivity.class);
+                DataHolder.setData(board); //przekazywanie danych przez DataHolder
                 startActivity(intent);
+            }
+            else {
+                Toast.makeText(PrepareActivity.this, "You should put both kings!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -225,30 +229,27 @@ public class PrepareActivity extends AppCompatActivity {
         }
 
         //usuwanie z planszy - btn_delete
-        btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clicked.getTag() != null)
+        btn_delete.setOnClickListener(v -> {
+            if(clicked.getTag() != null)
+            {
+                if(clicked.getTag().equals("wKing"))
                 {
-                    if(clicked.getTag().equals("wKing"))
-                    {
-                        iswKing = false;
-                        clicked.setTag("");
-                    }
-                    if(clicked.getTag().equals("bKing"))
-                    {
-                        isbKing = false;
-                        clicked.setTag("");
-                    }
+                    iswKing = false;
                 }
-                clicked.setImageResource(0);
+                if(clicked.getTag().equals("bKing"))
+                {
+                    isbKing = false;
+                }
             }
+            clicked.setImageResource(0);
+            clicked.setTag("");
         });
 
         defaultPosition();
     }
 
-    //ustawienie standardowe początkowe
+    /** Standardowe ustawienie początkowe.
+     */
     private void defaultPosition()
     {
         board.get(0).get(0).setImageResource(R.drawable.w_rook);
@@ -320,9 +321,13 @@ public class PrepareActivity extends AppCompatActivity {
         board.get(7).get(6).setTag("bPawn");
     }
 
-    //funkcja do powrotu koloru po kliknięciu innego przycisku
+    /** Metoda do powrotu koloru po kliknięciu innego przycisku.
+     */
+    @SuppressWarnings("deprecation")
     private void changeColorBack()
     {
+        if(clicked == null)
+            return;
         int x = 0, y = 0;
         for(ArrayList<ImageButton> row : board)
         {
@@ -342,9 +347,20 @@ public class PrepareActivity extends AppCompatActivity {
             clicked.getBackground().setTint(getResources().getColor(R.color.chess_white));
     }
 
+    /** Po powrocie do wcześniejszego ekranu przywraca kolor planszy.
+     */
     @Override
     public void onBackPressed() {
         changeColorBack();
         super.onBackPressed();
+    }
+
+    /** Metoda usuwająca z widoku paletkę po powrocie do ekranu.
+     */
+    @Override
+    protected void onResume() {
+        clicked = null;
+        linearLayout.setVisibility(View.GONE);
+        super.onResume();
     }
 }

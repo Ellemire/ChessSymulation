@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymulationActivity">
+    tools:context=".SimulationActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -578,5 +578,16 @@
         </TableRow>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_gameRecords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zagrane partie"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

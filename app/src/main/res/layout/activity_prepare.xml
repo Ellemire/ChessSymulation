@@ -26,64 +26,56 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_rook" />
+                android:background="@color/chess_white" />
 
             <ImageButton
                 android:id="@+id/btn_b8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_knight" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_c8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_bishop" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_d8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_queen" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_e8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_king" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_f8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_bishop" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_g8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_knight" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_h8"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_rook" />
+                android:background="@color/chess_black"/>
 
         </TableRow>
 
@@ -96,64 +88,56 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_b7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_c7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_d7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_e7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_f7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_g7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_black" />
 
             <ImageButton
                 android:id="@+id/btn_h7"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/b_pawn" />
+                android:background="@color/chess_white"/>
 
         </TableRow>
 
@@ -414,64 +398,56 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_b2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_c2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_d2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_e2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_f2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_g2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_h2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_pawn" />
+                android:background="@color/chess_black"/>
 
         </TableRow>
 
@@ -484,64 +460,56 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_rook" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_b1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_knight" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_c1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_bishop" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_d1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_queen" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_e1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_king" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_f1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_bishop" />
+                android:background="@color/chess_white"/>
 
             <ImageButton
                 android:id="@+id/btn_g1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_black"
-                app:srcCompat="@drawable/w_knight" />
+                android:background="@color/chess_black"/>
 
             <ImageButton
                 android:id="@+id/btn_h1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@color/chess_white"
-                app:srcCompat="@drawable/w_rook" />
+                android:background="@color/chess_white"/>
 
         </TableRow>
 
