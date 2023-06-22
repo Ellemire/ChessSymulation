@@ -14,13 +14,16 @@ import java.util.ArrayList;
 
 import Chess.GameRecord;
 
+/**
+ * Adapter dla recyclerView klasy GamesAdapter.
+ */
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder> {
 
     private final Context context;
     private final ArrayList<GameRecord> games;
     private  final GamesInterface gamesInterface;
 
-    /** Konstruktor dla Adaptera odpowiedzialnego za wyświetlanie zagranych partii
+    /** Konstruktor dla Adaptera odpowiedzialnego za wyświetlanie zagranych partii.
      * @param context kontekst danych
      * @param games zagrane gry
      * @param gamesInterface interfejs GameInterface
@@ -60,7 +63,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
         TextView txt_id, txt_numberOfMoves, txt_time, txt_result;
         ImageButton ibtn_delete, ibtn_startingPosition;
 
-        /** Konstruktor klasy MyViewHolder
+        /** Konstruktor klasy MyViewHolder.
          * @param itemView wiersz zapisu partii
          */
         public MyViewHolder(@NonNull View itemView) {

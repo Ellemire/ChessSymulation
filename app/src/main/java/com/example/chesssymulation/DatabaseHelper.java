@@ -15,23 +15,23 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Klasa do obsługi bazy danych
+ * Klasa do obsługi bazy danych.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    /** Nazwa bazy danych*/
+    /** Nazwa bazy danych.*/
     private static final String DATABASE_NAME = "GameRecords.db";
-    /**Wersja bazy danych*/
+    /**Wersja bazy danych.*/
     private static final int DATABASE_VERSION = 1;
-    /** Liczba zagranych partii*/
+    /** Liczba zagranych partii.*/
     private static final String TABLE_NAME = "games_played";
-    /** id kolumny*/
+    /** id kolumny.*/
     private static final String COLUMN_ID = "id";
-    /** Wykonane ruchy*/
+    /** Wykonane ruchy.*/
     private static final String COLUMN_MOVES = "moves";
-    /** Czas zakończenia symulacji*/
+    /** Czas zakończenia symulacji.*/
     private static final String COLUMN_TIME = "time";
-    /** położenie*/
+    /** Położenie.*/
     private static final String COLUMN_POSITION = "position";
 
     public DatabaseHelper(@Nullable Context context) {
@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /** metoda do czytania bazy danych
+    /** Metoda do czytania bazy danych.
      * @return kursor położenia w bazie danych
      */
     Cursor readAllData()
@@ -69,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    /** metoda do dowania zapisów partii do bazy danych
+    /** Metoda do dowania zapisów partii do bazy danych.
      * @param moves wykonane ruchy
      * @param time czas zakończenia symulacji
      * @param startingPosition pozycja początkowa
@@ -90,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, cv);
     }
 
-    /** metoda do usuwania zapisów z bazy danych
+    /** Metoda do usuwania zapisów z bazy danych.
      * @param row_id indeks usuwanego zapisu w bazie danych
      */
     public void deleteRecord(String row_id)

@@ -39,7 +39,7 @@ public class PrepareActivity extends AppCompatActivity {
     LinearLayout linearLayout;
 
     /** Metoda która wywołuje się po przejściu do ekranu, na którym przygotowane jest ustawienie figur przed symulacją.
-     * @param savedInstanceState
+     * @param savedInstanceState pakiet danych
      */
     @SuppressWarnings("deprecation")
     @Override
@@ -248,7 +248,7 @@ public class PrepareActivity extends AppCompatActivity {
         defaultPosition();
     }
 
-    /** Standardowe ustawienie początkowe
+    /** Standardowe ustawienie początkowe.
      */
     private void defaultPosition()
     {
@@ -321,7 +321,7 @@ public class PrepareActivity extends AppCompatActivity {
         board.get(7).get(6).setTag("bPawn");
     }
 
-    /** Metoda do powrotu koloru po kliknięciu innego przycisku
+    /** Metoda do powrotu koloru po kliknięciu innego przycisku.
      */
     @SuppressWarnings("deprecation")
     private void changeColorBack()

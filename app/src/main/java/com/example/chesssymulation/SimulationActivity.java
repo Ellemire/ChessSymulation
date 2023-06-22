@@ -53,8 +53,8 @@ public class SimulationActivity extends AppCompatActivity {
     Button btn_gameRecords;
     StringBuilder startingPosition;
 
-    /** Metoda która wywołuje się po przejściu do ekranusymulacji, odpowiada za stworzenie obiektów bierek
-     * @param savedInstanceState
+    /** Metoda która wywołuje się po przejściu do ekranusymulacji, odpowiada za stworzenie obiektów bierek.
+     * @param savedInstanceState pakiet danych
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,7 +274,7 @@ public class SimulationActivity extends AppCompatActivity {
     Piece lastlyMovedPiece = null;
     boolean endGame;
 
-    /** Metoda przesuwająca bierki na planszy
+    /** Metoda przesuwająca bierki na planszy.
      * @param piece_movable bierka która ma zostać przesunięta
      * @return czy pomyślnie przesunięto bierkę
      */
@@ -454,7 +454,7 @@ public class SimulationActivity extends AppCompatActivity {
         return true;
     }
 
-    /** Losuje bierkę do wykonania ruchu, wywołuje wykonanie ruchu
+    /** Losuje bierkę do wykonania ruchu, wywołuje wykonanie ruchu.
      * @param whiteTurn kolor bierek które mają się aktualnie ruszyć
      */
     @SuppressWarnings("StatementWithEmptyBody")
@@ -467,7 +467,7 @@ public class SimulationActivity extends AppCompatActivity {
             while(!movePiece(blackPieces.get(rand.nextInt(blackPieces.size()))));
     }
 
-    /** Metoda znajdująca króla na liście figur
+    /** Metoda znajdująca króla na liście figur.
      * @param color kolor szukanego króla
      * @return szukany król
      */
@@ -482,7 +482,7 @@ public class SimulationActivity extends AppCompatActivity {
     }
 
     /**
-     * klasa odpowiedzialna za symulowanie gry w szachy
+     * Klasa odpowiedzialna za symulowanie gry w szachy.
      */
     @SuppressWarnings("deprecation")
     @SuppressLint("StaticFieldLeak")
@@ -523,7 +523,7 @@ public class SimulationActivity extends AppCompatActivity {
     boolean back;
 
     /**
-     * Powrót do poprzedniego ekranu
+     * Powrót do poprzedniego ekranu.
      */
     @Override
     public void onBackPressed() {

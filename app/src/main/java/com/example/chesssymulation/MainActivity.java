@@ -13,8 +13,8 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn_start, btn_database;
 
-    /** Metoda która określa co ma być wykonywane po naciśnięciu przycisków na ekranie początkowym
-     * @param savedInstanceState
+    /** Metoda która określa co ma być wykonywane po naciśnięciu przycisków na ekranie początkowym.
+     * @param savedInstanceState pakiet danych
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

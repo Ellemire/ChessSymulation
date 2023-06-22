@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter dla recyclerView klasy GameRecordAdapter.
+ */
 public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.MyViewHolder> {
 
     private final Context context;
     private final ArrayList<String> moves;
 
-    /** Konstruktor dla Adaptera odpowiedzialnego za wyświetlanie wykonanych ruchów
+    /** Konstruktor dla Adaptera odpowiedzialnego za wyświetlanie wykonanych ruchów.
      * @param context kontekst danych
      * @param moves wykonane ruchy
      */
@@ -52,7 +55,7 @@ public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.My
 
         TextView txt_id, txt_whiteMove, txt_blackMove;
 
-        /** Konstruktor klasy MyViewHolder
+        /** Konstruktor klasy MyViewHolder.
          * @param itemView wiersz zapisu partii
          */
         public MyViewHolder(@NonNull View itemView) {

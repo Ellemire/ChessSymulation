@@ -49,7 +49,7 @@ public class GamesActivity extends AppCompatActivity implements GamesInterface {
         recyclerView.setLayoutManager(new LinearLayoutManager(GamesActivity.this));
     }
 
-    /** zapis do bazy danych
+    /** Zapis do bazy danych.
      * @throws JSONException obsługa wyjątku
      */
     public void storeDataInArrays() throws JSONException {

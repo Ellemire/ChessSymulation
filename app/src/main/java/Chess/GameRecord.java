@@ -3,8 +3,7 @@ package Chess;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/** Klasa odpowiedzialna za zapis partii
- *
+/** Klasa odpowiedzialna za zapis partii.
  */
 public class GameRecord implements Serializable {
     private final String time;
@@ -12,7 +11,7 @@ public class GameRecord implements Serializable {
     private final int numberOfMoves;
     private final String startingPosition;
 
-    /** Konstruktor obiektów klasy games record.
+    /** Konstruktor obiektów klasy gameRecord.
      * @param time czas zakończenia partii
      * @param moves lista wykonanych ruchów
      * @param startingPosition zapis pozycji startowej
