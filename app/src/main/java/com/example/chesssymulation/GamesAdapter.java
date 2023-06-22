@@ -20,6 +20,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
     private final ArrayList<GameRecord> games;
     private  final GamesInterface gamesInterface;
 
+    /** Konstruktor dla Adaptera odpowiedzialnego za wyświetlanie zagranych partii
+     * @param context kontekst danych
+     * @param games zagrane gry
+     * @param gamesInterface interfejs GameInterface
+     */
     public GamesAdapter(Context context, ArrayList<GameRecord> games, GamesInterface gamesInterface) {
         this.context = context;
         this.games = games;
@@ -47,11 +52,17 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
         return games.size();
     }
 
+     /**
+     * Klasa przechowująca dane, które są wyświetlane na games_row.xml
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_id, txt_numberOfMoves, txt_time, txt_result;
         ImageButton ibtn_delete, ibtn_startingPosition;
 
+        /** Konstruktor klasy MyViewHolder
+         * @param itemView wiersz zapisu partii
+         */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_id = itemView.findViewById(R.id.txt_id);

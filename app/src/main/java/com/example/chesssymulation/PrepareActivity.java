@@ -13,6 +13,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Activity obsługujące przygotowanie symulacji np. ustawienie bierek na szachownicy.
+ */
 public class PrepareActivity extends AppCompatActivity {
 
     Button btn_startSymulation;
@@ -35,6 +38,9 @@ public class PrepareActivity extends AppCompatActivity {
     Boolean iswKing = true, isbKing = true;
     LinearLayout linearLayout;
 
+    /** Metoda która wywołuje się po przejściu do ekranu, na którym przygotowane jest ustawienie figur przed symulacją.
+     * @param savedInstanceState
+     */
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +170,7 @@ public class PrepareActivity extends AppCompatActivity {
             changeColorBack();
             if (isbKing && iswKing) {
                 Intent intent = new Intent(PrepareActivity.this, SimulationActivity.class);
-                DataHolder.setData(board);
+                DataHolder.setData(board); //przekazywanie danych przez DataHolder
                 startActivity(intent);
             }
             else {
@@ -242,7 +248,8 @@ public class PrepareActivity extends AppCompatActivity {
         defaultPosition();
     }
 
-    //ustawienie standardowe początkowe
+    /** Standardowe ustawienie początkowe
+     */
     private void defaultPosition()
     {
         board.get(0).get(0).setImageResource(R.drawable.w_rook);
@@ -314,7 +321,8 @@ public class PrepareActivity extends AppCompatActivity {
         board.get(7).get(6).setTag("bPawn");
     }
 
-    //funkcja do powrotu koloru po kliknięciu innego przycisku
+    /** Metoda do powrotu koloru po kliknięciu innego przycisku
+     */
     @SuppressWarnings("deprecation")
     private void changeColorBack()
     {
@@ -339,12 +347,16 @@ public class PrepareActivity extends AppCompatActivity {
             clicked.getBackground().setTint(getResources().getColor(R.color.chess_white));
     }
 
+    /** Po powrocie do wcześniejszego ekranu przywraca kolor planszy.
+     */
     @Override
     public void onBackPressed() {
         changeColorBack();
         super.onBackPressed();
     }
 
+    /** Metoda usuwająca z widoku paletkę po powrocie do ekranu.
+     */
     @Override
     protected void onResume() {
         clicked = null;

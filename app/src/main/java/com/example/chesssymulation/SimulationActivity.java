@@ -29,7 +29,7 @@ import Chess.Queen;
 import Chess.Rook;
 
 /**
- *  klasa odpowiedzialna za ekran symulacji
+ *  Klasa odpowiedzialna za ekran symulacji.
  */
 @SuppressWarnings("deprecation")
 public class SimulationActivity extends AppCompatActivity {
@@ -53,6 +53,9 @@ public class SimulationActivity extends AppCompatActivity {
     Button btn_gameRecords;
     StringBuilder startingPosition;
 
+    /** Metoda która wywołuje się po przejściu do ekranusymulacji, odpowiada za stworzenie obiektów bierek
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -271,7 +274,7 @@ public class SimulationActivity extends AppCompatActivity {
     Piece lastlyMovedPiece = null;
     boolean endGame;
 
-    /** metoda przesuwająca bierki na planszy
+    /** Metoda przesuwająca bierki na planszy
      * @param piece_movable bierka która ma zostać przesunięta
      * @return czy pomyślnie przesunięto bierkę
      */
@@ -325,10 +328,10 @@ public class SimulationActivity extends AppCompatActivity {
                     if(piece.getClass().equals(piece_movable.getClass()) && !piece.equals(piece_movable) && piece.isColor() == piece_movable.isColor())
                         if(piece.calculatePossibleMoves(whitePieces, blackPieces, find_King(piece.isColor())).contains(move))
                         {
-                            if(!piece.position.first.equals(piece_movable.position.first))
-                                currentMove.append((char) ((int) piece_movable.position.first + 97));
-                            if(!piece.position.second.equals(piece_movable.position.second))
-                                currentMove.append(piece_movable.position.second + 1);
+                            if(!piece.getPosition().first.equals(piece_movable.getPosition().first))
+                                currentMove.append((char) ((int) piece_movable.getPosition().first + 97));
+                            if(!piece.getPosition().second.equals(piece_movable.getPosition().second))
+                                currentMove.append(piece_movable.getPosition().second + 1);
                         }
                 }
                 for(Piece piece : pieces)
@@ -347,7 +350,7 @@ public class SimulationActivity extends AppCompatActivity {
                             blackPieces.remove(piece);
                         pieces.remove(piece);
                         if(piece_movable instanceof Pawn)
-                            currentMove.append((char) ((int) piece_movable.position.first + 97));
+                            currentMove.append((char) ((int) piece_movable.getPosition().first + 97));
                         currentMove.append("x");
                         break;
                     }
@@ -362,7 +365,7 @@ public class SimulationActivity extends AppCompatActivity {
                     {
                         case 0:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_knight);
-                            Knight knight = new Knight(piece_movable.position, true);
+                            Knight knight = new Knight(piece_movable.getPosition(), true);
                             knight.setPicture(R.drawable.w_knight);
                             whitePieces.add(knight);
                             pieces.add(knight);
@@ -370,7 +373,7 @@ public class SimulationActivity extends AppCompatActivity {
                             break;
                         case 1:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_bishop);
-                            Bishop bishop = new Bishop(piece_movable.position, true);
+                            Bishop bishop = new Bishop(piece_movable.getPosition(), true);
                             bishop.setPicture(R.drawable.w_bishop);
                             whitePieces.add(bishop);
                             pieces.add(bishop);
@@ -378,7 +381,7 @@ public class SimulationActivity extends AppCompatActivity {
                             break;
                         case 2:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_rook);
-                            Rook rook = new Rook(piece_movable.position, true);
+                            Rook rook = new Rook(piece_movable.getPosition(), true);
                             rook.setPicture(R.drawable.w_rook);
                             whitePieces.add(rook);
                             pieces.add(rook);
@@ -386,7 +389,7 @@ public class SimulationActivity extends AppCompatActivity {
                             break;
                         case 3:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.w_queen);
-                            Queen queen = new Queen(piece_movable.position, true);
+                            Queen queen = new Queen(piece_movable.getPosition(), true);
                             queen.setPicture(R.drawable.w_queen);
                             whitePieces.add(queen);
                             pieces.add(queen);
@@ -403,7 +406,7 @@ public class SimulationActivity extends AppCompatActivity {
                     {
                         case 0:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_knight);
-                            Knight knight = new Knight(piece_movable.position, false);
+                            Piece knight = new Knight(piece_movable.getPosition(), false);
                             knight.setPicture(R.drawable.b_knight);
                             blackPieces.add(knight);
                             pieces.add(knight);
@@ -411,7 +414,7 @@ public class SimulationActivity extends AppCompatActivity {
                             break;
                         case 1:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_bishop);
-                            Bishop bishop = new Bishop(piece_movable.position, false);
+                            Piece bishop = new Bishop(piece_movable.getPosition(), false);
                             bishop.setPicture(R.drawable.b_bishop);
                             blackPieces.add(bishop);
                             pieces.add(bishop);
@@ -419,7 +422,7 @@ public class SimulationActivity extends AppCompatActivity {
                             break;
                         case 2:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_rook);
-                            Rook rook = new Rook(piece_movable.position, false);
+                            Piece rook = new Rook(piece_movable.getPosition(), false);
                             rook.setPicture(R.drawable.b_rook);
                             blackPieces.add(rook);
                             pieces.add(rook);
@@ -427,7 +430,7 @@ public class SimulationActivity extends AppCompatActivity {
                             break;
                         case 3:
                             board[piece_movable.getPosition().first][piece_movable.getPosition().second].setImageResource(R.drawable.b_queen);
-                            Queen queen = new Queen(piece_movable.position, false);
+                            Piece queen = new Queen(piece_movable.getPosition(), false);
                             queen.setPicture(R.drawable.b_queen);
                             blackPieces.add(queen);
                             pieces.add(queen);
@@ -451,7 +454,7 @@ public class SimulationActivity extends AppCompatActivity {
         return true;
     }
 
-    /** losuje bierkę do wykonania ruchu, wywołuje wykonanie ruchu
+    /** Losuje bierkę do wykonania ruchu, wywołuje wykonanie ruchu
      * @param whiteTurn kolor bierek które mają się aktualnie ruszyć
      */
     @SuppressWarnings("StatementWithEmptyBody")
@@ -464,11 +467,10 @@ public class SimulationActivity extends AppCompatActivity {
             while(!movePiece(blackPieces.get(rand.nextInt(blackPieces.size()))));
     }
 
-    /** metoda znajdująca króla na liście figur
+    /** Metoda znajdująca króla na liście figur
      * @param color kolor szukanego króla
      * @return szukany król
      */
-    //znajduje króla
     private King find_King(boolean color){
         for (Piece piece : pieces) {
             if(piece instanceof King){
@@ -489,7 +491,7 @@ public class SimulationActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             back = false;
-            while(!endGame) //tu zamienić na isCheckMate - tymczasowo ilość ruchów
+            while(!endGame)
             {
                 if(back)
                     return null;
@@ -519,6 +521,10 @@ public class SimulationActivity extends AppCompatActivity {
     }
 
     boolean back;
+
+    /**
+     * Powrót do poprzedniego ekranu
+     */
     @Override
     public void onBackPressed() {
         back = true;

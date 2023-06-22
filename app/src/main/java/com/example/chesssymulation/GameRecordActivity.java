@@ -8,6 +8,9 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
+/**
+ * KLasa obsługująca ekran wyświetlający zapis partii.
+ */
 public class GameRecordActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;

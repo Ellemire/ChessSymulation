@@ -1,6 +1,5 @@
 package com.example.chesssymulation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,10 @@ public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.My
     private final Context context;
     private final ArrayList<String> moves;
 
+    /** Konstruktor dla Adaptera odpowiedzialnego za wyświetlanie wykonanych ruchów
+     * @param context kontekst danych
+     * @param moves wykonane ruchy
+     */
     public GameRecordAdapter(Context context, ArrayList<String> moves) {
         this.context = context;
         this.moves = moves;
@@ -42,10 +45,16 @@ public class GameRecordAdapter extends RecyclerView.Adapter<GameRecordAdapter.My
         return moves.size() / 2;
     }
 
+    /**
+     * Klasa przechowująca dane, które są wyświetlane na game_record_row.xml
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_id, txt_whiteMove, txt_blackMove;
 
+        /** Konstruktor klasy MyViewHolder
+         * @param itemView wiersz zapisu partii
+         */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_id = itemView.findViewById(R.id.txt_idMove);

@@ -19,17 +19,25 @@ import java.util.ArrayList;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    /** Nazwa bazy danych*/
     private static final String DATABASE_NAME = "GameRecords.db";
+    /**Wersja bazy danych*/
     private static final int DATABASE_VERSION = 1;
+    /** Liczba zagranych partii*/
     private static final String TABLE_NAME = "games_played";
+    /** id kolumny*/
     private static final String COLUMN_ID = "id";
+    /** Wykonane ruchy*/
     private static final String COLUMN_MOVES = "moves";
+    /** Czas zakończenia symulacji*/
     private static final String COLUMN_TIME = "time";
+    /** położenie*/
     private static final String COLUMN_POSITION = "position";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -48,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /** metoda do czytania bazy danych
-     * @return
+     * @return kursor położenia w bazie danych
      */
     Cursor readAllData()
     {

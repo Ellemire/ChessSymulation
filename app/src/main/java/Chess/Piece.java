@@ -6,7 +6,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public abstract class Piece {
 
-    public Pair<Integer, Integer> position;
+    protected Pair<Integer, Integer> position;
     protected boolean color;
     protected ArrayList<Pair<Integer, Integer>> movesList;
 

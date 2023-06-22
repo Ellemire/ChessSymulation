@@ -5,7 +5,7 @@ import android.util.Pair;
 import java.util.ArrayList;
 public class Pawn extends Piece {
 
-    int direction;
+    private int direction;
 
     //konstruktor
     public Pawn(Pair<Integer, Integer> position, boolean color) {

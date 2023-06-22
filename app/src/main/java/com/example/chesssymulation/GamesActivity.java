@@ -18,6 +18,9 @@ import java.util.Objects;
 
 import Chess.GameRecord;
 
+/**
+ * Klasa obsługująca ekran z bazą zapisów partii.
+ */
 public class GamesActivity extends AppCompatActivity implements GamesInterface {
 
     RecyclerView recyclerView;

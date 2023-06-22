@@ -6,10 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+/**
+ * Activity obsługujące ekran początkowy.
+ */
 public class MainActivity extends AppCompatActivity {
 
     Button btn_start, btn_database;
 
+    /** Metoda która określa co ma być wykonywane po naciśnięciu przycisków na ekranie początkowym
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
